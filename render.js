@@ -132,9 +132,18 @@ stratCurrentOVB.forEach(element => {
     thisLO.textContent = round(value + amount, 0.1) + " L"
 });
 
-const spotPriceTD = document.getElementById(`${round(spotPrice, TICK)}-box`);
+const roundSpotPrice = round(spotPrice, TICK)
+const targetSpotPrice = round(spotPrice+(8*TICK), TICK)
+
+const spotPriceTD = document.getElementById(`${roundSpotPrice}-box`);
 spotPriceTD.setAttribute('class', `cell priceTD spotTD`);
-console.log(`${round(spotPrice, TICK)}-box`)
+
+const spotpriceDiv = document.getElementById('currentprice');
+var link = `#${targetSpotPrice}-row`
+var currentpriceLink = document.createElement("a");
+currentpriceLink.setAttribute("href", link);
+currentpriceLink.innerHTML = `Go to current price: ${roundSpotPrice}`; // Customize the link text
+spotpriceDiv.appendChild(currentpriceLink);
 
 function render_1div(trade) {
     // Create a new <div> element
