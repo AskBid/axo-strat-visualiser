@@ -58,3 +58,15 @@ $ ./updateJSONs.sh 3e6655bfe870a02109e44e48bb37633e1923635f0c1a73d31a708835 da8c
 ```
 
 > Note: Non ADA pair are not supported yet.
+
+## Tick size
+
+in the first rwo of the file `render.js` you will find a variable that decides what is the price step between each row.
+
+At the moment it works with the AXO price and simila magnitude prices, but for things like SNEK where prices are much smaller it needs to be lower.
+
+```js
+const TICK = 0.01
+// for SNEK would be better like:
+const TICK = 0.00001
+```
