@@ -1,9 +1,11 @@
 const fs = require("fs");
 
 console.log(`arg1: ${process.argv[2]}`)
-console.log(`arg2: ${process.argv[3]}`)
+console.log(`arg2: ${process.argv[3]}`) // not used so far
+console.log(`TICK size: ${process.argv[4]}`)
 
 const stratID = `${process.argv[2]}`
+const TICK = `${process.argv[4]}`
 
 fs.readFile("./stratTrades.json", "utf8", (err, jsonString) => {
   if (err) {
@@ -12,7 +14,7 @@ fs.readFile("./stratTrades.json", "utf8", (err, jsonString) => {
   }
     
     const content_json = JSON.parse(jsonString).result.map(translateTrade);
-    const content = `const stratTrades = ${JSON.stringify(content_json)}\nconst stratID = "${stratID}"`
+    const content = `const stratTrades = ${JSON.stringify(content_json)}\nconst stratID = "${stratID}"\nconst TICK = ${TICK}`
     
     fs.writeFile('data.js', content, err => {
         if (err) {

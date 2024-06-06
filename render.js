@@ -1,4 +1,4 @@
-const TICK = 0.01
+//const TICK = 0.01 // now given with command line argument, defaults to 0.01
 const PAD = 5
 
 
@@ -120,16 +120,21 @@ stratCurrentOVB.forEach(element => {
     const price = element.quoteTicker == "ADA" ? (element.price) : 1/element.price
     const side = element.quoteTicker == "ADA" ? "bid" : "ask"
     const amount =  element.quoteTicker == "ADA" ? element.amount/price : element.amount
+    console.log(`StratOVB-----`)
     console.log(element)
     console.log(side)
+    //console.log(price)
+    //console.log(`${round(price, TICK)}-row`)
     const thisRow = document.getElementById(`${round(price, TICK)}-row`);
-    thisRow.setAttribute('class', 'rowTR rowHighlight');
-    const thisLO =  document.getElementById(`${round(price, TICK)}-${side}OVB`);
-    thisLO.setAttribute('class', `cell OVB active${side}OVB`);
-    var value = thisLO.innerHTML.split(" ")[0]
-    value = value == "" ? 0 : parseFloat(value)
-    console.log(value)
-    thisLO.textContent = round(value + amount, 0.1) + " L"
+    if (thisRow) {
+        thisRow.setAttribute('class', 'rowTR rowHighlight');
+        const thisLO =  document.getElementById(`${round(price, TICK)}-${side}OVB`);
+        thisLO.setAttribute('class', `cell OVB active${side}OVB`);
+        var value = thisLO.innerHTML.split(" ")[0]
+        value = value == "" ? 0 : parseFloat(value)
+        console.log(value)
+        thisLO.textContent = round(value + amount, 0.1) + " L"
+    }
 });
 
 const roundSpotPrice = round(spotPrice, TICK)
