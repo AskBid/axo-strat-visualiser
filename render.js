@@ -119,7 +119,7 @@ stratTrades.forEach(element => {
 });
 
 stratCurrentOVB.forEach(element => {
-    // {"date":"1717661233.181503636","amount":6.598858,"price":3.1648511129024874,"orderSide":"ASK"}
+    // {"timestamp":"1717661233.181503636","amount":6.598858,"price":3.1648511129024874,"orderSide":"ASK"}
     console.log("element::::::::::::::")
     console.log(element)
     const thisRow = document.getElementById(`${round(element.price, TICK)}-row`);
