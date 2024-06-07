@@ -2,9 +2,11 @@
 const PAD = 5
 
 
-var minmaxs = [find_min_max(stratTrades), find_min_max(marketTrades)]
-const min = Math.min(...(minmaxs.map(item => item.min))) - (TICK * PAD)
-const max = Math.max(...(minmaxs.map(item => item.max))) + (TICK * (PAD+1))
+var minmaxs = [find_min_max(stratTrades), find_min_max(marketTrades), find_min_max(stratCurrentOVB)]
+console.log("minmaxs::::::::::::::::::::::::::")
+var filteredMinMaxs = minmaxs.filter(e => e != false)
+const min = Math.min(...(filteredMinMaxs.map(item => item.min))) - (TICK * PAD)
+const max = Math.max(...(filteredMinMaxs.map(item => item.max))) + (TICK * (PAD+1))
 
 console.log(`min: ${min}, max: ${max}`)
 
@@ -117,23 +119,18 @@ stratTrades.forEach(element => {
 });
 
 stratCurrentOVB.forEach(element => {
-    const price = element.quoteTicker == "ADA" ? (element.price) : 1/element.price
-    const side = element.quoteTicker == "ADA" ? "bid" : "ask"
-    const amount =  element.quoteTicker == "ADA" ? element.amount/price : element.amount
-    console.log(`StratOVB-----`)
+    // {"date":"1717661233.181503636","amount":6.598858,"price":3.1648511129024874,"orderSide":"ASK"}
+    console.log("element::::::::::::::")
     console.log(element)
-    console.log(side)
-    //console.log(price)
-    //console.log(`${round(price, TICK)}-row`)
-    const thisRow = document.getElementById(`${round(price, TICK)}-row`);
+    const thisRow = document.getElementById(`${round(element.price, TICK)}-row`);
     if (thisRow) {
         thisRow.setAttribute('class', 'rowTR rowHighlight');
-        const thisLO =  document.getElementById(`${round(price, TICK)}-${side}OVB`);
-        thisLO.setAttribute('class', `cell OVB active${side}OVB`);
+        const thisLO =  document.getElementById(`${round(element.price, TICK)}-${element.orderSide}OVB`);
+        thisLO.setAttribute('class', `cell OVB active${element.orderSide}OVB`);
         var value = thisLO.innerHTML.split(" ")[0]
         value = value == "" ? 0 : parseFloat(value)
         console.log(value)
-        thisLO.textContent = round(value + amount, 0.1) + " L"
+        thisLO.textContent = round(value + element.amount, 0.1) + " L"
     }
 });
 
@@ -164,6 +161,9 @@ function find_min_max(stratTrades) {
     const prices = stratTrades.map(item => item.price);
 
     // Find the maximum and minimum prices
+    if (prices.length == 0) {
+        return false
+    }
     const maxPrice = Math.max(...prices);
     const minPrice = Math.min(...prices);
 
