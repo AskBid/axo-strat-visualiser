@@ -25,7 +25,7 @@ headtitle.appendChild(stratLink);
 
 const myElement = document.getElementById('maintable');
 
-for (let index = 0; index < ((max - min) / TICK); index++) {
+for (let index = 0; index < ((max - min) / TICK); index++) { // creates HTML Skeleton (empty)
         // Create a new <div> element
         const price = round(max - (TICK * (index+1)), TICK)
         
