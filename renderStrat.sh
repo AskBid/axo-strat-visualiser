@@ -11,7 +11,7 @@ echo "STRAT: ${STRAT}"
 echo "ASSET: ${ASSET}"
 echo "TICK:  ${TICK}"
 
-node renderStratDisposableStorageFactory.js $STRAT $ASSET $TICK
+node renderStrat1TimeStorageFactory.js $STRAT $ASSET $TICK
 
 brave ./renderStrat_page/index.html
 
