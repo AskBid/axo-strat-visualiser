@@ -24,29 +24,29 @@ Quick google search for NodeJS will tell you for its installation, on Windows to
 
 Clone this repository locally and get into its folder `cd axo-strat-visualiser`
 
-With the above installed is enough to run the file from terminal with `./updateJSONs.sh <Strategy ID> [<Asset ID if other than AXO>]` 
+With the above installed is enough to run the file from terminal with `./renderStrat.sh <Strategy ID> [<Asset ID if other than AXO>]` 
 
 > Note: it is possible to run on Windows, but you'll need to do some reasearch on how to, installing WSL on Windows should solve all problem btw, it is like a virtual Linux inside Windows.
 
 If the file doesn't run, just run this command first to give the file excutable permission `chmod +x ./updateJSON.sh`.
 
-the `updateJSONs.sh` script will try to open Brave browser on the page that the script just created. But if that does not work just open manully the file in the same directory as the script named `index.html`.
+the `renderStrat.sh` script will try to open Brave browser on the page that the script just created. But if that does not work just open manully the file in the same directory as the script named `renderStrat_page/index.html`.
 
 # Settings
 
-> Note: if you don't have Brave installed you can try changing the last line in the `updateJSONs.sh` script with your own browser command:
+> Note: if you don't have Brave installed you can try changing the last line in the `renderStrat.sh` script with your own browser command:
 
 ```sh
 #now it is:
-brave ./index.html
+brave ./renderStrat_page/index.html
 #you can try with:
-chrome ./index.html
+chrome ./renderStrat_page/index.html
 ```
 
 When you run the script you will need to give as argument the Strategy ID:
 
 ```sh
-$ ./updateJSONs.sh 1a5458a13a2c63d527d514068fc3012da1d8e3858f3bcc95d41a5643
+$ ./renderStrat.sh 1a5458a13a2c63d527d514068fc3012da1d8e3858f3bcc95d41a5643
 ```
 
 But if you are not using the `ADA / AXO` pair you will need to specify also the other Asset as AXO is set as default.
@@ -54,19 +54,25 @@ But if you are not using the `ADA / AXO` pair you will need to specify also the 
 Here an example for Liqwid `ADA / LQ` pair:
 
 ```sh
-$ ./updateJSONs.sh 3e6655bfe870a02109e44e48bb37633e1923635f0c1a73d31a708835 da8c30857834c6ae7203935b89278c532b3995245295456f993e1d244c51
+$ ./renderStrat.sh 3e6655bfe870a02109e44e48bb37633e1923635f0c1a73d31a708835 da8c30857834c6ae7203935b89278c532b3995245295456f993e1d244c51
+```
+
+For few assets (currently LQ and SNEK) also text is supported, so you coul write:
+
+```sh
+$ ./renderStrat.sh 46bc2d991b77499e46c5ea918ecf246caea13618e7729d596eb59267 LQ
 ```
 
 > Note: Non ADA pair are not supported yet.
 
 ## Tick size
 
-in the first rwo of the file `render.js` you will find a variable that decides what is the price step between each row.
+At the moment the tick size, that decides the steps in teh price ladder, works with the AXO price and similar magnitude prices, but for things like SNEK where prices are much smaller it needs to be lower.
 
-At the moment it works with the AXO price and simila magnitude prices, but for things like SNEK where prices are much smaller it needs to be lower.
+By default the TICK size is "0.01" (which works for AXO and LQ pairs) but for SNEK you'll need something more like "0.00001".
 
-```js
-const TICK = 0.01
-// for SNEK would be better like:
-const TICK = 0.00001
+To achieve this, you can give a third argument to `./renderStrat` like this:
+
+```sh
+$ ./renderStrat.sh 474efaf7981c277373bbc003805a1dc5ace60f6071338dc9d0fb7273 SNEK 0.00001
 ```

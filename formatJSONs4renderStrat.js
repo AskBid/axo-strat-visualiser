@@ -8,7 +8,7 @@ console.log(`TICK size: ${process.argv[4]}`)
 const stratID = `${process.argv[2]}`
 const TICK = `${process.argv[4]}`
 
-fs.readFile("./stratTrades.json", "utf8", (err, jsonString) => {
+fs.readFile("./renderStrat_database/stratTrades.json", "utf8", (err, jsonString) => {
   if (err) {
     console.log("File read failed:", err);
     return;
@@ -17,7 +17,7 @@ fs.readFile("./stratTrades.json", "utf8", (err, jsonString) => {
     const content_json = JSON.parse(jsonString).result.map(helpers.translateTrade);
     const content = `const stratTrades = ${JSON.stringify(content_json)}\nconst stratID = "${stratID}"\nconst TICK = ${TICK}`
     
-    fs.writeFile('data.js', content, err => {
+    fs.writeFile('./renderStrat_page/data.js', content, err => {
         if (err) {
             console.error(err);
         } else {
@@ -26,7 +26,7 @@ fs.readFile("./stratTrades.json", "utf8", (err, jsonString) => {
     });
 });
 
-fs.readFile("./marketTrades.json", "utf8", (err, jsonString) => {
+fs.readFile("./renderStrat_database/marketTrades.json", "utf8", (err, jsonString) => {
   if (err) {
     console.log("File read failed:", err);
     return;
@@ -36,7 +36,7 @@ fs.readFile("./marketTrades.json", "utf8", (err, jsonString) => {
     const content_json = JSON.parse(jsonString).result;
     const content = `const marketTrades = ${JSON.stringify(content_json)}`
     
-    fs.writeFile('data2.js', content, err => {
+    fs.writeFile('./renderStrat_page/data2.js', content, err => {
         if (err) {
             console.error(err);
         } else {
@@ -45,7 +45,7 @@ fs.readFile("./marketTrades.json", "utf8", (err, jsonString) => {
     });
 });
 
-fs.readFile("./stratCurrentOVB.json", "utf8", (err, jsonString) => {
+fs.readFile("./renderStrat_database/stratCurrentOVB.json", "utf8", (err, jsonString) => {
     if (err) {
         console.log("File read failed:", err);
         return;
@@ -54,7 +54,7 @@ fs.readFile("./stratCurrentOVB.json", "utf8", (err, jsonString) => {
     const content_json = JSON.parse(jsonString).result.map(helpers.translateOVB);
     const content = `const stratCurrentOVB = ${JSON.stringify(content_json)}`
     
-    fs.writeFile('data3.js', content, err => {
+    fs.writeFile('./renderStrat_page/data3.js', content, err => {
         if (err) {
             console.error(err);
         } else {
@@ -63,7 +63,7 @@ fs.readFile("./stratCurrentOVB.json", "utf8", (err, jsonString) => {
     });
 });
 
-fs.readFile("./orderBook.json", "utf8", (err, jsonString) => {
+fs.readFile("./renderStrat_database/orderBook.json", "utf8", (err, jsonString) => {
   if (err) {
     console.log("File read failed:", err);
     return;
@@ -72,7 +72,7 @@ fs.readFile("./orderBook.json", "utf8", (err, jsonString) => {
     const content_json = JSON.parse(jsonString).result.spotSpreadData.spot;
     const content = `const spotPrice = ${JSON.stringify(content_json)}`
     
-    fs.writeFile('data4.js', content, err => {
+    fs.writeFile('./renderStrat_page/data4.js', content, err => {
         if (err) {
             console.error(err);
         } else {
