@@ -8,6 +8,7 @@ console.log(`TICK size: ${process.argv[4]}`)
 const stratID = `${process.argv[2]}`
 const TICK = `${process.argv[4]}`
 
+// strategy trades 
 fs.readFile("./renderStrat_database/stratTrades.json", "utf8", (err, jsonString) => {
   if (err) {
     console.log("File read failed:", err);
@@ -26,6 +27,7 @@ fs.readFile("./renderStrat_database/stratTrades.json", "utf8", (err, jsonString)
     });
 });
 
+// market trades
 fs.readFile("./renderStrat_database/marketTrades.json", "utf8", (err, jsonString) => {
   if (err) {
     console.log("File read failed:", err);
@@ -45,6 +47,7 @@ fs.readFile("./renderStrat_database/marketTrades.json", "utf8", (err, jsonString
     });
 });
 
+// current OVB
 fs.readFile("./renderStrat_database/stratCurrentOVB.json", "utf8", (err, jsonString) => {
     if (err) {
         console.log("File read failed:", err);
@@ -63,6 +66,7 @@ fs.readFile("./renderStrat_database/stratCurrentOVB.json", "utf8", (err, jsonStr
     });
 });
 
+// spot price
 fs.readFile("./renderStrat_database/orderBook.json", "utf8", (err, jsonString) => {
   if (err) {
     console.log("File read failed:", err);

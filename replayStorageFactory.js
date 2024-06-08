@@ -18,7 +18,8 @@ console.log(typeof h.translateTrade)
 // StratCurrentOVB:
     // {"timestamp":"1717722503.079021162","amount":12.967096328735352,"price":3.1800000530719768,"orderSide":"ask"}
 
-fs.readFile("./stratTrades.json", "utf8", (err, jsonString) => {
+// strategy trades
+fs.readFile("./replay_database/stratTrades.json", "utf8", (err, jsonString) => {
   if (err) {
     console.log("File read failed:", err);
     return;
@@ -28,7 +29,7 @@ fs.readFile("./stratTrades.json", "utf8", (err, jsonString) => {
 
     // const content = `const stratTrades = ${JSON.stringify(content_json)}\nconst stratID = "${stratID}"\nconst TICK = ${TICK}`
 
-    fs.readFile("./replay_database/stratTradesReplayDatabase.json", "utf8", (err, jsonString) => {
+    fs.readFile("./replay_database/stratTrades_ReplayDatabase.json", "utf8", (err, jsonString) => {
         if (err) {
             console.log("File read failed:", err);
             return;
@@ -38,7 +39,7 @@ fs.readFile("./stratTrades.json", "utf8", (err, jsonString) => {
         const updated = Object.assign(existing, keyTheTimestamps(translatedStratTrades))
         console.log(updated)
 
-        fs.writeFile('./replay_database/stratTradesReplayDatabase.json', JSON.stringify(updated, null, 2), err => {
+        fs.writeFile('./replay_database/stratTrades_ReplayDatabase.json', JSON.stringify(updated, null, 2), err => {
             if (err) {
                 console.error(err);
             } else {
@@ -48,6 +49,36 @@ fs.readFile("./stratTrades.json", "utf8", (err, jsonString) => {
     });
 });
 
+// current OVB
+fs.readFile("./replay_database/stratCurrentOVB.json", "utf8", (err, jsonString) => {
+    if (err) {
+        console.log("File read failed:", err);
+        return;
+    }
+    
+    const translatedStratOVB = JSON.parse(jsonString).result.map(h.translateOVB);
+
+    // const content = `const stratTrades = ${JSON.stringify(content_json)}\nconst stratID = "${stratID}"\nconst TICK = ${TICK}`
+
+    fs.readFile("./replay_database/stratCurrentOVB_ReplayDatabase.json", "utf8", (err, jsonString) => {
+        if (err) {
+            console.log("File read failed:", err);
+            return;
+        } 
+
+        var existing = JSON.parse(jsonString)
+        const updated = Object.assign(existing, keyTheTimestamps(translatedStratOVB))
+        console.log(updated)
+
+        fs.writeFile('./replay_database/stratCurrentOVB_ReplayDatabase.json', JSON.stringify(updated, null, 2), err => {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log("stratCurrentOVB written successfully")
+            }
+        });
+    });
+});
 
 function keyTheTimestamps(array) {
     var obj = {}
