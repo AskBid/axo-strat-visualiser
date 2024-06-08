@@ -11,7 +11,11 @@ echo "STRAT: ${STRAT}"
 echo "ASSET: ${ASSET}"
 echo "TICK:  ${TICK}"
 
-# Execute the Node.js script
 node formatJSONs4renderStrat.js $STRAT $ASSET $TICK
 
 brave ./renderStrat_page/index.html
+
+# remove fetch files
+echo "deleting fetch_data jsons ..."
+rm ./renderStrat_database/*.json
+echo "deleted."
