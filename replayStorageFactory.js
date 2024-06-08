@@ -20,14 +20,12 @@ console.log(typeof h.translateTrade)
 
 // strategy trades
 fs.readFile("./replay_database/stratTrades.json", "utf8", (err, jsonString) => {
-  if (err) {
-    console.log("File read failed:", err);
-    return;
-  }
+    if (err) {
+        console.log("File read failed:", err);
+        return;
+    }
     
-    const translatedStratTrades = JSON.parse(jsonString).result.map(h.translateTrade);
-
-    // const content = `const stratTrades = ${JSON.stringify(content_json)}\nconst stratID = "${stratID}"\nconst TICK = ${TICK}`
+    const stratTrades = JSON.parse(jsonString).result.map(h.translateTrade);
 
     fs.readFile("./replay_database/stratTrades_ReplayDatabase.json", "utf8", (err, jsonString) => {
         if (err) {
@@ -36,7 +34,7 @@ fs.readFile("./replay_database/stratTrades.json", "utf8", (err, jsonString) => {
         } 
 
         var existing = JSON.parse(jsonString)
-        const updated = Object.assign(existing, keyTheTimestamps(translatedStratTrades))
+        const updated = Object.assign(existing, keyTheTimestamps(stratTrades))
         console.log(updated)
 
         fs.writeFile('./replay_database/stratTrades_ReplayDatabase.json', JSON.stringify(updated, null, 2), err => {
@@ -56,9 +54,7 @@ fs.readFile("./replay_database/stratCurrentOVB.json", "utf8", (err, jsonString) 
         return;
     }
     
-    const translatedStratOVB = JSON.parse(jsonString).result.map(h.translateOVB);
-
-    // const content = `const stratTrades = ${JSON.stringify(content_json)}\nconst stratID = "${stratID}"\nconst TICK = ${TICK}`
+    const stratCurrentOVB = JSON.parse(jsonString).result.map(h.translateOVB);
 
     fs.readFile("./replay_database/stratCurrentOVB_ReplayDatabase.json", "utf8", (err, jsonString) => {
         if (err) {
@@ -67,7 +63,7 @@ fs.readFile("./replay_database/stratCurrentOVB.json", "utf8", (err, jsonString) 
         } 
 
         var existing = JSON.parse(jsonString)
-        const updated = Object.assign(existing, keyTheTimestamps(translatedStratOVB))
+        const updated = Object.assign(existing, keyTheTimestamps(stratCurrentOVB))
         console.log(updated)
 
         fs.writeFile('./replay_database/stratCurrentOVB_ReplayDatabase.json', JSON.stringify(updated, null, 2), err => {
@@ -75,6 +71,36 @@ fs.readFile("./replay_database/stratCurrentOVB.json", "utf8", (err, jsonString) 
                 console.error(err);
             } else {
                 console.log("stratCurrentOVB written successfully")
+            }
+        });
+    });
+});
+
+// market trades
+fs.readFile("./replay_database/marketTrades.json", "utf8", (err, jsonString) => {
+    if (err) {
+      console.log("File read failed:", err);
+      return;
+    }
+    // {"price":3.1619,"amount":4.8034,"timestamp":1717773067.5645857,"decimals":4,"direction":1,"orderSide":"BUY"}
+    // Markete Trades already come with ADA price and amount in CNT
+    const marketTrades = JSON.parse(jsonString).result;
+    
+    fs.readFile("./replay_database/marketTrades_ReplayDatabase.json", "utf8", (err, jsonString) => {
+        if (err) {
+            console.log("File read failed:", err);
+            return;
+        } 
+
+        var existing = JSON.parse(jsonString)
+        const updated = Object.assign(existing, keyTheTimestamps(marketTrades))
+        console.log(updated)
+
+        fs.writeFile('./replay_database/stratCurrentOVB_ReplayDatabase.json', JSON.stringify(updated, null, 2), err => {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log("marketTrades written successfully")
             }
         });
     });
