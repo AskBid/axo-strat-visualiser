@@ -24,22 +24,35 @@ fs.readFile("./stratTrades.json", "utf8", (err, jsonString) => {
     return;
   }
     
-    const translatedStratTrade = JSON.parse(jsonString).result.map(h.translateTrade);
+    const translatedStratTrades = JSON.parse(jsonString).result.map(h.translateTrade);
 
     // const content = `const stratTrades = ${JSON.stringify(content_json)}\nconst stratID = "${stratID}"\nconst TICK = ${TICK}`
+
     fs.readFile("./replay_database/stratTradesReplayDatabase.json", "utf8", (err, jsonString) => {
         if (err) {
             console.log("File read failed:", err);
             return;
         } 
-        console.log("read:")
-        console.log(jsonString)
+
+        var existing = JSON.parse(jsonString)
+        const updated = Object.assign(existing, keyTheTimestamps(translatedStratTrades))
+        console.log(updated)
+
+        fs.writeFile('./replay_database/stratTradesReplayDatabase.json', JSON.stringify(updated, null, 2), err => {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log("stratTrades written successfully")
+            }
+        });
     });
-    // fs.writeFile('data.js', content, err => {
-    //     if (err) {
-    //         console.error(err);
-    //     } else {
-    //         console.log("stratTrades written successfully")
-    //     }
-    // });
 });
+
+
+function keyTheTimestamps(array) {
+    var obj = {}
+    array.forEach(element => {
+        obj[element.timestamp] = element
+    });
+    return obj
+}
