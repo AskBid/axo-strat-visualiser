@@ -4,9 +4,8 @@ TICK=${3:-0.01}
 ASSET=$2
 STRAT=$1
 
-. /path/to/fetch_data.sh
+. ./fetch_data.sh
 fetch_data $ASSET $STRAT
-
 
 echo "STRAT: ${STRAT}"
 echo "ASSET: ${ASSET}"
