@@ -5,6 +5,8 @@ fetch_data() {
     local ASSET="$2"
     local DIFFERLOCATION="$3"
 
+    echo ""
+    echo "::::"
     echo "running fetch_data() ..."
     echo "STRAT: ${STRAT}"
     echo "ASSET: ${ASSET}"
@@ -22,9 +24,10 @@ fetch_data() {
         ASSET="da8c30857834c6ae7203935b89278c532b3995245295456f993e1d244c51"
     fi
 
-    # Run the first curl command
+    echo "ASSET after ticker translation: ${ASSET}"
+
+    # Run the first curl command                                                                                                                       https://app.axo.trade/api/rpc/getMarketTrades
     curl -X POST -H "Content-Type: application/json" -d "{\"meta\": {}, \"params\": {\"baseSubject\":\"${ASSET}\",\"quoteSubject\":\"\"},\"meta\":{}}" https://app.axo.trade/api/rpc/getMarketTrades > "${DIFFERLOCATION}marketTrades.json"
-    echo "curl -X POST -H "Content-Type: application/json" -d "{\"meta\": {}, \"params\": {\"baseSubject\":\"${ASSET}\",\"quoteSubject\":\"\"},\"meta\":{}}" https://app.axo.trade/api/rpc/getMarketTrades > ${DIFFERLOCATION}marketTrades.json"
     curl -X POST -H "Content-Type: application/json" -d "{\"meta\": {}, \"params\": {\"baseSubject\":\"${ASSET}\",\"quoteSubject\":\"\"},\"meta\":{}}" https://app.axo.trade/api/rpc/getOrderBook > ${DIFFERLOCATION}orderBook.json
 
     # Run the second curl command
@@ -32,5 +35,7 @@ fetch_data() {
     curl -X POST -H "Content-Type: application/json" -d "{\"params\": \"${STRAT}\",\"meta\":{}}" https://app.axo.trade/api/rpc/getStrategyCurrentVOB > ${DIFFERLOCATION}stratCurrentOVB.json
 }
 
+
+echo "end of fetch_data() but asyncronous curl requets still running ..."
 # Example usage:
 # fetch_data "AXO" "my_strategy"

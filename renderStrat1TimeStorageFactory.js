@@ -1,6 +1,9 @@
 const fs = require("fs");
 const helpers = require("./helpers.js");
 
+console.log("")
+console.log("start renderStrat1TimeStorageFactory.js ...")
+
 console.log(`arg1: ${process.argv[2]}`)
 console.log(`arg2: ${process.argv[3]}`) // not used so far
 console.log(`TICK size: ${process.argv[4]}`)
@@ -85,3 +88,5 @@ fs.readFile("./renderStrat_database/orderBook.json", "utf8", (err, jsonString) =
     });
 });
 
+console.log("ending renderStrat1TimeStoragefactory.js.")
+console.log("")
