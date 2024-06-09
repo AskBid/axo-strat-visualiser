@@ -1,5 +1,7 @@
 //const TICK = 0.01 // now given with command line argument, defaults to 0.01
 const PAD = 5
+const precisionForAssetValues = 0.1
+const multiplier = 1000
 
 
 var minmaxs = [find_min_max(stratTrades), find_min_max(marketTrades), find_min_max(stratCurrentOVB)]
@@ -90,7 +92,7 @@ marketTrades.forEach(element => {
     const sideMO = element.orderSide == "SELL" ? "sell" : "buy"
     const myElement = document.getElementById(`${round(element.price, TICK)}-${sideMO}`);
     const value = parseFloat(myElement.innerHTML) ? parseFloat(myElement.innerHTML) : 0
-    myElement.textContent = round(value + element.amount, 0.1)  
+    myElement.textContent = round(valueit(value) + element.amount, precisionForAssetValues, multiplier)  
 });
 
 console.log(new Date(parseFloat(lastObj.timestamp) * 1000))
@@ -114,7 +116,7 @@ stratTrades.forEach(element => {
    console.log(element)
    const myElement = document.getElementById(`${round(element.price, TICK)}-${sideMO}`);
    const value = parseFloat(myElement.innerHTML) ? parseFloat(myElement.innerHTML) : 0
-   myElement.textContent = round(value + element.amount, 0.1)  
+   myElement.textContent = round(valueit(value) + element.amount, precisionForAssetValues, multiplier)  
    console.log(round(element.price, TICK))  
 });
 
@@ -130,7 +132,7 @@ stratCurrentOVB.forEach(element => {
         var value = thisLO.innerHTML.split(" ")[0]
         value = value == "" ? 0 : parseFloat(value)
         console.log(value)
-        thisLO.textContent = round(value + element.amount, 0.1) + " L"
+        thisLO.textContent = round(valueit(value) + element.amount, precisionForAssetValues, multiplier) + " L"
     }
 });
 
@@ -178,10 +180,17 @@ function find_last(marketTrades) {
     return lastObj
 }
 
-function round(number, precision) {
+function round(number, precision, multiplier) {
+    if (multiplier) {
+        number = number / multiplier
+    }
     const spaces = String(precision).split(".")[1].length
     const half_precision = precision / 2 
     const change = number % precision
     const fixed = (change >= half_precision) ? (number + (precision - change)) : (number - change)
     return fixed.toFixed(spaces)
+}
+
+function valueit(value) {
+    return value * multiplier
 }
