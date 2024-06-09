@@ -1,12 +1,20 @@
 #!/bin/bash
 
 # TICK=${3:-0.01} // no need forthe replay data fetching
-ASSET=$2
+
 STRAT=$1
+ASSET=$2
+echo "inside fetchReplayData.sh"
+echo "ASSET: ${ASSET}"
+echo "STRAT: ${STRAT}"
+
+if [ "$ASSET" = "-" ] || [ -z "$ASSET" ] || [ "$ASSET" = "AXO" ]; then
+    ASSET="420000029ad9527271b1b1e3c27ee065c18df70a4a4cfc3093a41a4441584f"  # change to default if second argument is "-" or empty string
+fi
 
 # fetch()
 . ./fetch_data.sh
-fetch_data $ASSET $STRAT ./replay_database/
+fetch_data $STRAT $ASSET ./replay_database/
 echo "data fetched (curls) done."
 
 # storageFactory()

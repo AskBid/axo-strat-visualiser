@@ -1,23 +1,7 @@
 const h = require("./helpers.js")
 const fs = require("fs");
 
-console.log(typeof h.translateOVB)
-console.log(typeof h.translateTrade)
-
-// > ob1 = {123: "ciao", 124: "miao"}
-// { '123': 'ciao', '124': 'miao' }
-// > ob2 = {124: "miao2", 125: "update!", 126: "indeed"}
-// { '124': 'miao2', '125': 'update!', '126': 'indeed' }
-// > Object.assign(ob1, ob2)
-// { '123': 'ciao', '124': 'miao2', '125': 'update!', '126': 'indeed' }
-
-// MarketTrade:
-    // {"price":3.1619,"amount":4.8034,"timestamp":1717773067.5645857,"decimals":4,"direction":1,"orderSide":"BUY"}
-// StratTrade:
-    // {"timestamp":"1717722496.076430517","amount":6.387096,"price":3.1000004,"orderSide":"BUY"}
-// StratCurrentOVB:
-    // {"timestamp":"1717722503.079021162","amount":12.967096328735352,"price":3.1800000530719768,"orderSide":"ask"}
-
+const timestampNow = Date.now()
 // strategy trades
 fs.readFile("./replay_database/stratTrades.json", "utf8", (err, jsonString) => {
     if (err) {
@@ -35,7 +19,6 @@ fs.readFile("./replay_database/stratTrades.json", "utf8", (err, jsonString) => {
 
         var existing = JSON.parse(jsonString)
         const updated = Object.assign(existing, keyTheTimestamps(stratTrades))
-        console.log(updated)
 
         fs.writeFile('./replay_database/stratTrades_ReplayDatabase.json', JSON.stringify(updated, null, 2), err => {
             if (err) {
@@ -64,7 +47,6 @@ fs.readFile("./replay_database/stratCurrentOVB.json", "utf8", (err, jsonString) 
 
         var existing = JSON.parse(jsonString)
         const updated = Object.assign(existing, keyTheTimestamps(stratCurrentOVB))
-        console.log(updated)
 
         fs.writeFile('./replay_database/stratCurrentOVB_ReplayDatabase.json', JSON.stringify(updated, null, 2), err => {
             if (err) {
@@ -84,7 +66,7 @@ fs.readFile("./replay_database/marketTrades.json", "utf8", (err, jsonString) => 
     }
     // {"price":3.1619,"amount":4.8034,"timestamp":1717773067.5645857,"decimals":4,"direction":1,"orderSide":"BUY"}
     // Markete Trades already come with ADA price and amount in CNT
-    const marketTrades = JSON.parse(jsonString).result;
+    const marketTrades = JSON.parse(jsonString).result.map(h.translateMarketTrade);
     
     fs.readFile("./replay_database/marketTrades_ReplayDatabase.json", "utf8", (err, jsonString) => {
         if (err) {
@@ -94,9 +76,8 @@ fs.readFile("./replay_database/marketTrades.json", "utf8", (err, jsonString) => 
 
         var existing = JSON.parse(jsonString)
         const updated = Object.assign(existing, keyTheTimestamps(marketTrades))
-        console.log(updated)
 
-        fs.writeFile('./replay_database/stratCurrentOVB_ReplayDatabase.json', JSON.stringify(updated, null, 2), err => {
+        fs.writeFile('./replay_database/marketTrades_ReplayDatabase.json', JSON.stringify(updated, null, 2), err => {
             if (err) {
                 console.error(err);
             } else {
@@ -105,6 +86,37 @@ fs.readFile("./replay_database/marketTrades.json", "utf8", (err, jsonString) => 
         });
     });
 });
+
+// spot price
+fs.readFile("./replay_database/orderBook.json", "utf8", (err, jsonString) => {
+    if (err) {
+      console.log("File read failed:", err);
+      return;
+    }
+      
+    const spotSpreadData = JSON.parse(jsonString).result.spotSpreadData;
+    
+    fs.readFile("./replay_database/orderBook_ReplayDatabase.json", "utf8", (err, jsonString) => {
+        if (err) {
+            console.log("File read failed:", err);
+            return;
+        } 
+
+        var newObj = {}
+        newObj[timestampNow] = spotSpreadData
+        var existing = JSON.parse(jsonString)
+        const updated = Object.assign(existing, newObj)
+
+        fs.writeFile('./replay_database/orderBook_ReplayDatabase.json', JSON.stringify(updated, null, 2), err => {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log("orderBook written successfully")
+            }
+        });
+    });
+});
+  
 
 function keyTheTimestamps(array) {
     var obj = {}

@@ -1,11 +1,14 @@
 #!/bin/bash
 
 fetch_data() {
-    local ASSET="$1"
-    local STRAT="$2"
+    local STRAT="$1"
+    local ASSET="$2"
     local DIFFERLOCATION="$3"
 
     echo "running fetch_data() ..."
+    echo "STRAT: ${STRAT}"
+    echo "ASSET: ${ASSET}"
+    echo "Location: ${DIFFERLOCATION}"
 
     if [ "$ASSET" = "-" ] || [ -z "$ASSET" ] || [ "$ASSET" = "AXO" ]; then
         ASSET="420000029ad9527271b1b1e3c27ee065c18df70a4a4cfc3093a41a4441584f"  # change to default if second argument is "-" or empty string
@@ -20,7 +23,8 @@ fetch_data() {
     fi
 
     # Run the first curl command
-    curl -X POST -H "Content-Type: application/json" -d "{\"meta\": {}, \"params\": {\"baseSubject\":\"${ASSET}\",\"quoteSubject\":\"\"},\"meta\":{}}" https://app.axo.trade/api/rpc/getMarketTrades > ${DIFFERLOCATION}marketTrades.json
+    curl -X POST -H "Content-Type: application/json" -d "{\"meta\": {}, \"params\": {\"baseSubject\":\"${ASSET}\",\"quoteSubject\":\"\"},\"meta\":{}}" https://app.axo.trade/api/rpc/getMarketTrades > "${DIFFERLOCATION}marketTrades.json"
+    echo "curl -X POST -H "Content-Type: application/json" -d "{\"meta\": {}, \"params\": {\"baseSubject\":\"${ASSET}\",\"quoteSubject\":\"\"},\"meta\":{}}" https://app.axo.trade/api/rpc/getMarketTrades > ${DIFFERLOCATION}marketTrades.json"
     curl -X POST -H "Content-Type: application/json" -d "{\"meta\": {}, \"params\": {\"baseSubject\":\"${ASSET}\",\"quoteSubject\":\"\"},\"meta\":{}}" https://app.axo.trade/api/rpc/getOrderBook > ${DIFFERLOCATION}orderBook.json
 
     # Run the second curl command

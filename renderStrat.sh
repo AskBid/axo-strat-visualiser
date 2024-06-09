@@ -5,7 +5,7 @@ ASSET=$2
 STRAT=$1
 
 . ./fetch_data.sh
-fetch_data $ASSET $STRAT ./renderStrat_database/
+fetch_data $ASSET $STRAT "./renderStrat_database/"
 
 echo "STRAT: ${STRAT}"
 echo "ASSET: ${ASSET}"
