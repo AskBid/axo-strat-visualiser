@@ -1,3 +1,5 @@
+> Note: project has been changing and not all of the below is relevant, but it can help understanding current workings until I write up to date readme.
+
 # Prerequisits
 
 Need to have `curl` and `nodejs` installed. Is possible to run them on Windows but not sure what's the best route.
