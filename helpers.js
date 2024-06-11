@@ -22,5 +22,9 @@ module.exports = {
     translateMarketTrade: function (trade) {
         //{"price":5.609,"amount":33.809,"timestamp":1717875214.5967648,"decimals":3,"direction":-1,"orderSide":"SELL"}
         return {"price": trade.price, "amount": trade.amount, "timestamp": `${trade.timestamp}`, "orderSide":"SELL"}
+    },
+    fromObjTimeKeysToArrayOfObjs: function(objTimeKeys, currentTime) {
+        // make an obj with only keys that are under currentTimes
+        // make an array with only obj before the currentTime
     }
 }

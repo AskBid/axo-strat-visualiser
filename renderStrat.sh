@@ -18,7 +18,10 @@ echo "curl requests ended. fetch_data() exited. back into renderStrat.sh"
 
 node renderStrat1TimeStorageFactory.js $STRAT $ASSET $TICK
 
-brave ./renderStrat_page/index.html
+#brave ./renderStrat_page/index.html
+echo ""
+echo "link to html page:"
+echo "$(pwd)/renderStrat_page/index.html"
 
 # remove fetch files
 # echo "deleting fetch_data jsons ..."
