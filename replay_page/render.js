@@ -68,3 +68,10 @@ var stratCurrentOVBnow = makeArrayOfObjBeforeTime(stratCurrentOVB, time)
 var stratTradesNow = makeArrayOfObjBeforeTime(stratTrades, time)
 var orderBookNow = makeArrayOfObjBeforeTime(spotSpreadData, time)
 
+// TODO:
+/// - iterate through each object to populate PageObj
+/// - render price highlight, last trade highlight and current bid-ask spread.
+/// - make overall render function
+/// - work on time variable updating render function
+/// - work on interface on how to interact with time variable from page.
+/// refactor.
