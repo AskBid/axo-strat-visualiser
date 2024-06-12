@@ -37,30 +37,34 @@ function initPageObj() {
     return obj
 }
 
-
 function minmaxPrices() {
     /// here we use a function to select object before a date, only to transform object to array 
     /// while selecting all elements so using random high timestamp
     const allPrices = makeArrayOfObjBeforeTime(marketTrades, 997199254740991).map(e => e.price)
         .concat(makeArrayOfObjBeforeTime(stratCurrentOVB, 997199254740991).map(e => e.price))
         .concat(makeArrayOfObjBeforeTime(stratTrades, 997199254740991).map(e => e.price))
-        return {min: Math.min(...allPrices), max: Math.max(...allPrices)}
-    }
-    
-    function makeArrayOfObjBeforeTime(objTimeKeys, currentTime) {
-        const beforeKeys = Object.keys(objTimeKeys).filter(key => parseFloat(key) < currentTime)
-        var arrayObjs = []
-        beforeKeys.forEach(key => {
-            arrayObjs.push(objTimeKeys[key])
-        });
-        return arrayObjs
+    return {min: Math.min(...allPrices), max: Math.max(...allPrices)}
 }
 
-console.log(PageObj)
+
+function makeArrayOfObjBeforeTime(objTimeKeys, currentTime) {
+    const beforeKeys = Object.keys(objTimeKeys).filter(key => {
+        return parseFloat(key) < currentTime
+    })
+    // console.log(beforeKeys)
+    var arrayObjs = []
+    beforeKeys.forEach(key => {
+        arrayObjs.push(objTimeKeys[key])
+    });
+    return arrayObjs
+}
+
+// console.log(PageObj)
 
 var time = 1718970308;
 
 var marketTradesNow = makeArrayOfObjBeforeTime(marketTrades, time)
-var stratCurrentOVBnow = makeArrayOfObjBeforeTime(marketTrades, time)
-var stratTradesNow = makeArrayOfObjBeforeTime(marketTrades, time)
-var orderBookNow = makeArrayOfObjBeforeTime(marketTrades, time)
+var stratCurrentOVBnow = makeArrayOfObjBeforeTime(stratCurrentOVB, time)
+var stratTradesNow = makeArrayOfObjBeforeTime(stratTrades, time)
+var orderBookNow = makeArrayOfObjBeforeTime(spotSpreadData, time)
+

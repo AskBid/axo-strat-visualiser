@@ -65,9 +65,16 @@ fs.readFile("./replay_database/orderBook_ReplayDatabase.json", "utf8", (err, jso
       console.log("File read failed:", err);
       return;
     }
-      
+    /// to cope with the differnet timestamp format
     const spotSpreadData = JSON.parse(jsonString);
-    const content = `const spotSpreadData = ${JSON.stringify(spotSpreadData, null, 2)}`
+    let newSpotSpreadData = {}
+    Object.keys(spotSpreadData).forEach(key => {
+        let obj = spotSpreadData[key];
+        let newkey = (parseFloat(key) / 1000).toFixed(0);
+        newSpotSpreadData[newkey] = obj
+    })
+    /// to cope with the differnet timestamp format
+    const content = `const spotSpreadData = ${JSON.stringify(newSpotSpreadData, null, 2)}`
 
     fs.writeFile('./replay_page/orderBook.js', content, err => {
         if (err) {
