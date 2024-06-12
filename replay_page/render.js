@@ -1,12 +1,14 @@
 const TICK = 0.000005
 const MULTIPLIER = 1
 const minmax = minmaxPrices()
-const MIN = roundnum(minmax.min, TICK)
-const MAX = roundnum(minmax.max, TICK)
+const MIN = roundnum(minmax.min - (5 * TICK), TICK)
+const MAX = roundnum(minmax.max + (5 * TICK), TICK)
 const spaces = String(TICK).split(".")[1].length
+var time = 1718970308;
 var PageObj = initPageObj()
+var Highlights = {bid: null, spot: null, ask: null, timestamp: null}
 
-function roundtext(number, precision, multiplier) {
+function roundtext(number, precision, multiplier) { //multiplier is only for asset values not price and only for visualisation formatting
     if (multiplier) {
         number = number / multiplier
     }
@@ -65,7 +67,6 @@ function makeArrayOfObjBeforeTime(objTimeKeys, currentTime) {
 
 // console.log(PageObj)
 
-var time = 1718970308;
 
 var marketTradesNow = makeArrayOfObjBeforeTime(marketTrades, time)
 var stratCurrentOVBnow = makeArrayOfObjBeforeTime(stratCurrentOVB, time)
@@ -75,9 +76,40 @@ var orderBookNow = makeArrayOfObjBeforeTime(spotSpreadData, time)
 // TODO:
 /// - iterate through each object to populate PageObj
 
+marketTradesNow.forEach(obj => {
+    const price = roundtext(obj.price, TICK)
+
+    if (obj.orderSide === "SELL") {
+        PageObj[price].sellmos = PageObj[price].sellmos + obj.amount
+    } else {
+        PageObj[price].buymos  = PageObj[price].buymos + obj.amount
+    }
+});
+
+stratCurrentOVBnow.forEach(obj => {
+    const price = roundtext(obj.price, TICK)
+
+    if (obj.orderSide === "ask") {
+        PageObj[price].selllo = PageObj[price].selllo + obj.amount
+    } else {
+        PageObj[price].buylo  = PageObj[price].buylo + obj.amount
+    }
+});
+
+stratTradesNow.forEach(obj => {
+    const price = roundtext(obj.price, TICK)
+
+    if (obj.orderSide === "SELL") {
+        PageObj[price].sold = PageObj[price].sold + obj.amount
+    } else {
+        PageObj[price].bought  = PageObj[price].bought + obj.amount
+    }
+});
 
 
 /// - render price highlight, last trade highlight and current bid-ask spread.
+
+
 /// - make overall render function
 /// - work on time variable updating render function
 /// - work on interface on how to interact with time variable from page.
