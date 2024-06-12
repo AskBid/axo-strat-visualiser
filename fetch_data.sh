@@ -24,6 +24,11 @@ fetch_data() {
         ASSET="da8c30857834c6ae7203935b89278c532b3995245295456f993e1d244c51"
     fi
 
+    if [ "$ASSET" = "LENFI" ]; then
+        ASSET="8fef2d34078659493ce161a6c7fba4b56afefa8535296a5743f6958741414441"
+    fi
+    
+
     echo "ASSET after ticker translation: ${ASSET}"
 
     # Run the first curl command                                                                                                                       https://app.axo.trade/api/rpc/getMarketTrades

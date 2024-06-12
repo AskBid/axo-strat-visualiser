@@ -1,7 +1,7 @@
 //const TICK = 0.01 // now given with command line argument, defaults to 0.01
 const PAD = 5 // number of ticks around min and max prices
 const precisionForAssetValues = 0.1
-const multiplier = 1000
+const multiplier = 1
 
 
 var minmaxs = [find_min_max(stratTrades), find_min_max(marketTrades), find_min_max(stratCurrentOVB)]
