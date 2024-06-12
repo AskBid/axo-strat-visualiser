@@ -3,5 +3,6 @@
 /replay_page/orderBook.js
 /replay_page/stratCurrentOVB.js
 /replay_page/stratTrades.js
+replay_archive/
 *.json
 *.log

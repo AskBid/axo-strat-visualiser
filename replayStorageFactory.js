@@ -1,7 +1,8 @@
 const h = require("./helpers.js")
 const fs = require("fs");
 
-const timestampNow = Date.now()
+const timestampNow = (Date.now() / 1000).toFixed(0);
+
 // strategy trades
 fs.readFile("./replay_database/stratTrades.json", "utf8", (err, jsonString) => {
     if (err) {
