@@ -1,12 +1,12 @@
 const TICK = 0.000005
 const MULTIPLIER = 1
 const minmax = minmaxPrices()
-const MIN = round(minmax.min, TICK)
-const MAX = round(minmax.max, TICK)
+const MIN = roundnum(minmax.min, TICK)
+const MAX = roundnum(minmax.max, TICK)
 const spaces = String(TICK).split(".")[1].length
 var PageObj = initPageObj()
 
-function round(number, precision, multiplier) {
+function roundtext(number, precision, multiplier) {
     if (multiplier) {
         number = number / multiplier
     }
@@ -14,7 +14,11 @@ function round(number, precision, multiplier) {
     const half_precision = precision / 2 
     const change = number % precision
     const fixed = (change >= half_precision) ? (number + (precision - change)) : (number - change)
-    return parseFloat(fixed.toFixed(spaces))
+    return fixed.toFixed(spaces)
+}
+
+function roundnum(number, precision, multiplier) {
+    return parseFloat(roundtext(number, precision, multiplier))
 }
 
 function initPageObj() {
@@ -70,6 +74,9 @@ var orderBookNow = makeArrayOfObjBeforeTime(spotSpreadData, time)
 
 // TODO:
 /// - iterate through each object to populate PageObj
+
+
+
 /// - render price highlight, last trade highlight and current bid-ask spread.
 /// - make overall render function
 /// - work on time variable updating render function
