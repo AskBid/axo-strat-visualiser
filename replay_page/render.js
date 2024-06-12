@@ -4,7 +4,7 @@ const minmax = minmaxPrices()
 const MIN = roundnum(minmax.min - (5 * TICK), TICK)
 const MAX = roundnum(minmax.max + (5 * TICK), TICK)
 const spaces = String(TICK).split(".")[1].length
-var time = 1718970308;
+var time = 1717974902;
 var PageObj = initPageObj()
 var Highlights = {bid: null, spot: null, ask: null, timestamp: null}
 
@@ -65,13 +65,10 @@ function makeArrayOfObjBeforeTime(objTimeKeys, currentTime) {
     return arrayObjs
 }
 
-// console.log(PageObj)
-
-
 var marketTradesNow = makeArrayOfObjBeforeTime(marketTrades, time)
 var stratCurrentOVBnow = makeArrayOfObjBeforeTime(stratCurrentOVB, time)
 var stratTradesNow = makeArrayOfObjBeforeTime(stratTrades, time)
-var orderBookNow = makeArrayOfObjBeforeTime(spotSpreadData, time)
+// var orderBookNow = makeArrayOfObjBeforeTime(spotSpreadData, time)
 
 // TODO:
 /// - iterate through each object to populate PageObj
@@ -109,7 +106,23 @@ stratTradesNow.forEach(obj => {
 
 /// - render price highlight, last trade highlight and current bid-ask spread.
 
-
+let orderBookDataCompare = {timestamp: null, delta: null}
+Object.keys(spotSpreadData).forEach(key => {
+    if (!orderBookDataCompare.timestamp) {
+        orderBookDataCompare.timestamp = parseFloat(key);
+        orderBookDataCompare.delta     = parseFloat(key) - time;
+    }
+    const prevDelta = orderBookDataCompare.delta;
+    const newDelta = parseFloat(key) - time;
+    if (newDelta <= 0 && newDelta > prevDelta) {
+        orderBookDataCompare.timestamp = key;
+        orderBookDataCompare.delta     = newDelta;
+    } 
+})
+let orderBookData = spotSpreadData[`${orderBookDataCompare.timestamp}`]
+Highlights.spot = roundtext(orderBookData.spot)
+Highlights.bid = orderBookData.spot - ((orderBookData.spot * orderBookData.pct_spread) / 2)
+Highlights.ask = orderBookData.spot + ((orderBookData.spot * orderBookData.pct_spread) / 2)
 /// - make overall render function
 /// - work on time variable updating render function
 /// - work on interface on how to interact with time variable from page.
