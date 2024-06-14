@@ -1,8 +1,9 @@
-const TICK = 0.000005
-const MULTIPLIER = 1
-const minmax = minmaxPrices()
-const MIN = roundnum(minmax.min - (5 * TICK), TICK)
-const MAX = roundnum(minmax.max + (5 * TICK), TICK)
+const TICK = 0.000005;
+const MULTIPLIER = 1;
+const minmax = minmaxPrices();
+const ticksPAD = 10;
+const MIN = roundnum(minmax.min - (ticksPAD * TICK), TICK);
+const MAX = roundnum(minmax.max + (ticksPAD * TICK), TICK);
 const spaces = String(TICK).split(".")[1].length
 var time = 1717974902;
 var PageObj = initPageObj()
@@ -68,7 +69,6 @@ function makeArrayOfObjBeforeTime(objTimeKeys, currentTime) {
 var marketTradesNow = makeArrayOfObjBeforeTime(marketTrades, time)
 var stratCurrentOVBnow = makeArrayOfObjBeforeTime(stratCurrentOVB, time)
 var stratTradesNow = makeArrayOfObjBeforeTime(stratTrades, time)
-// var orderBookNow = makeArrayOfObjBeforeTime(spotSpreadData, time)
 
 // TODO:
 /// - iterate through each object to populate PageObj
@@ -119,11 +119,14 @@ Object.keys(spotSpreadData).forEach(key => {
         orderBookDataCompare.delta     = newDelta;
     } 
 })
+
 let orderBookData = spotSpreadData[`${orderBookDataCompare.timestamp}`]
 Highlights.spot = roundtext(orderBookData.spot)
-Highlights.bid = orderBookData.spot - ((orderBookData.spot * orderBookData.pct_spread) / 2)
-Highlights.ask = orderBookData.spot + ((orderBookData.spot * orderBookData.pct_spread) / 2)
+Highlights.bid = orderBookData.spot - ((orderBookData.spot * (orderBookData.pct_spread/100)) / 2)
+Highlights.ask = orderBookData.spot + ((orderBookData.spot * (orderBookData.pct_spread/100)) / 2)
+
 /// - make overall render function
+
 /// - work on time variable updating render function
 /// - work on interface on how to interact with time variable from page.
 /// refactor.

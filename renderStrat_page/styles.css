@@ -135,4 +135,29 @@ font-weight: bold;
 	padding: 10px 0px 10px 0px;
 }
 
+#Bought {
+	background-color: #eee;
+	width: 100%;
+	color:#1436e1;
+	text-align: center;
+	padding: 10px 0px 10px 0px;
+}
+
+#Sold {
+	background-color: #eee;
+	width: 100%;
+	color:#b65343;
+	text-align: center;
+	padding: 10px 0px 10px 0px;
+}
+
+#profitloss {
+	background-color: #eee;
+	font-weight: bold;
+	width: 100%;
+	color:#b643b4;
+	text-align: center;
+	padding: 10px 0px 10px 0px;
+}
+
 /* <HEADER */

@@ -194,3 +194,22 @@ function round(number, precision, multiplier) {
 function valueit(value) {
     return value * multiplier
 }
+
+let buys = stratTrades.filter(e => e.orderSide == 'BUY')
+let sells = stratTrades.filter(e => e.orderSide == 'SELL')
+
+let totalbuy = 0; 
+buys.forEach(buy => totalbuy = totalbuy + (buy.amount * buy.price));
+
+let totalsell = 0; 
+sells.forEach(sell => totalsell = totalsell + (sell.amount * sell.price));
+
+
+const boughtCell = document.getElementById('Bought');
+boughtCell.innerHTML = `You bough ${totalbuy.toFixed(2)} ADA worth of the CNT`; // Customize the link text
+
+const soldcell = document.getElementById('Sold');
+soldcell.innerHTML = `You sold ${totalsell.toFixed(2)} ADA worth of the CNT`; // Customize the link text
+
+const profitcell = document.getElementById('profitloss');
+profitcell.innerHTML = `for a profit of: ${(totalsell-totalbuy).toFixed(2)} ADA`; // Customize the link text
