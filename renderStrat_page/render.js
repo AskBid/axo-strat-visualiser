@@ -198,18 +198,30 @@ function valueit(value) {
 let buys = stratTrades.filter(e => e.orderSide == 'BUY')
 let sells = stratTrades.filter(e => e.orderSide == 'SELL')
 
-let totalbuy = 0; 
-buys.forEach(buy => totalbuy = totalbuy + (buy.amount * buy.price));
+let objADA = stratUserFunds.filter(obj => obj.asset_name === "ADA"); 
+let objCNT = stratUserFunds.filter(obj => obj.asset_name !== "ADA"); 
 
-let totalsell = 0; 
-sells.forEach(sell => totalsell = totalsell + (sell.amount * sell.price));
+let currentADA = objADA.length > 0 ? objADA[0].allocation : 0;
+let currentCNT = objCNT.length > 0 ? objCNT[0].allocation : 0;
+let initialADA = currentADA;
+let initialCNT = currentCNT;
+let nameCNT    = objCNT.length > 0 ? objCNT[0].asset_name : "CNT";
 
+buys.forEach(buy => {
+    initialADA = initialADA + (buy.amount * buy.price)
+    initialCNT = initialCNT - buy.amount
+});
+
+sells.forEach(sell => {
+    initialADA = initialADA - (sell.amount * sell.price)
+    initialCNT = initialCNT + sell.amount
+})
 
 const boughtCell = document.getElementById('Bought');
-boughtCell.innerHTML = `You bough ${totalbuy.toFixed(2)} ADA worth of the CNT`; // Customize the link text
+boughtCell.innerHTML = `You entered: ${initialADA.toFixed(2)} ADA and ${initialCNT.toFixed(2)} ${nameCNT}`;
 
 const soldcell = document.getElementById('Sold');
-soldcell.innerHTML = `You sold ${totalsell.toFixed(2)} ADA worth of the CNT`; // Customize the link text
+soldcell.innerHTML =   `You now have: ${currentADA.toFixed(2)} ADA and ${currentCNT.toFixed(2)} ${nameCNT}`;
 
 const profitcell = document.getElementById('profitloss');
-profitcell.innerHTML = `for a profit of: ${(totalsell-totalbuy).toFixed(2)} ADA`; // Customize the link text
+profitcell.innerHTML = `At the current prices:<br>if you had hold your asset you'd have:<br>${(initialADA + (initialCNT * spotPrice)).toFixed(2)} ADA<br><br>instead your strat now holds a value of:<br>${(currentADA + (currentCNT * spotPrice)).toFixed(2)} ADA<br><br>profit: ${((currentADA + (currentCNT * spotPrice))-(initialADA + (initialCNT * spotPrice))).toFixed(2)} ADA`;
