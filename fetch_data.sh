@@ -38,6 +38,10 @@ fetch_data() {
     # Run the second curl command
     curl -X POST -H "Content-Type: application/json" -d "{\"params\": \"${STRAT}\",\"meta\":{}}" https://app.axo.trade/api/rpc/getStrategyTrades > ${DIFFERLOCATION}stratTrades.json
     curl -X POST -H "Content-Type: application/json" -d "{\"params\": \"${STRAT}\",\"meta\":{}}" https://app.axo.trade/api/rpc/getStrategyCurrentVOB > ${DIFFERLOCATION}stratCurrentOVB.json
+
+    # Run user Funds query
+    curl -X POST -H "Content-Type: application/json" -d "{\"params\": {\"id\":\"${STRAT}\"},\"meta\":{}}" https://app.axo.trade/api/rpc/getStrategyUserFunds > ${DIFFERLOCATION}stratUserFunds.json
+
 }
 
 
