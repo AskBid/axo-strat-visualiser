@@ -88,5 +88,29 @@ fs.readFile("./renderStrat_database/orderBook.json", "utf8", (err, jsonString) =
     });
 });
 
+// strategy trades 
+fs.readFile("./renderStrat_database/stratUserFunds.json", "utf8", (err, jsonString) => {
+    if (err) {
+      console.log("File read failed:", err);
+      return;
+    }
+      
+    const content_json = JSON.parse(jsonString).result.totalLiquidity.map(assetObj => {
+        let asset_name = assetObj.asset_name === "" ? "ADA" : helpers.hexToAscii(assetObj.asset_name);
+        let allocation = assetObj.allocation
+        return {asset_name, allocation}
+    });
+    const content = `const stratUserFunds = ${JSON.stringify(content_json, null, 2)}`
+    
+    fs.writeFile('./renderStrat_page/data5.js', content, err => {
+        if (err) {
+            console.error(err);
+        } else {
+            console.log("stratUserFunds written successfully")
+        }
+    });
+});
+
+
 console.log("ending renderStrat1TimeStoragefactory.js.")
 console.log("")

@@ -22,5 +22,12 @@ module.exports = {
     translateMarketTrade: function (trade) {
         //{"price":5.609,"amount":33.809,"timestamp":1717875214.5967648,"decimals":3,"direction":-1,"orderSide":"SELL"}
         return {"price": trade.price, "amount": trade.amount, "timestamp": `${trade.timestamp}`, "orderSide":"SELL"}
+    },
+    hexToAscii: function (hex) {
+        var str = '';
+        for (var i = 0; i < hex.length; i += 2) {
+            str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+        }
+        return str;
     }
 }
