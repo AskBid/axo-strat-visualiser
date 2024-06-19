@@ -4,8 +4,8 @@ class FrameOBJ {
         this.stratCurrentOVB = stratCurrentOVB;
         this.stratTrades = stratTrades;
         this.spotSpreadData = spotSpreadData
-        this.Highlights = this.buildHighlight(this.spotSpreadData);
         this.TICK = TICK;
+        this.Highlights = this.buildHighlight(this.spotSpreadData);
         this.MAX = MAX;
         this.MIN = MIN;
         this.FrameObj = this.initFrameObj();
