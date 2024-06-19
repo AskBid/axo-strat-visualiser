@@ -64,9 +64,11 @@ class FrameOBJ {
     }
 
     buildHighlight(spotSpreadData) {
-        Highlights.spot = roundtext(spotSpreadData.spot)
-        Highlights.bid = spotSpreadData.spot - ((spotSpreadData.spot * (spotSpreadData.pct_spread/100)) / 2)
-        Highlights.ask = spotSpreadData.spot + ((spotSpreadData.spot * (spotSpreadData.pct_spread/100)) / 2)
+        var highlights = {bid: null, spot: null, ask: null, timestamp: null}
+        highlights.spot = roundtext(spotSpreadData.spot)
+        highlights.bid = spotSpreadData.spot - ((spotSpreadData.spot * (spotSpreadData.pct_spread/100)) / 2)
+        highlights.ask = spotSpreadData.spot + ((spotSpreadData.spot * (spotSpreadData.pct_spread/100)) / 2)
+        return highlights
     }
 }
 
@@ -76,62 +78,74 @@ const minmax = minmaxPrices();
 const ticksPAD = 10;
 const MIN = roundnum(minmax.min - (ticksPAD * TICK), TICK);
 const MAX = roundnum(minmax.max + (ticksPAD * TICK), TICK);
-const spaces = String(TICK).split(".")[1].length
 var time = 1717974902;
-var PageObj = initPageObj()
-var Highlights = {bid: null, spot: null, ask: null, timestamp: null}
 
 
 
-function minmaxPrices() {
-    /// here we use a function to select object before a date, only to transform object to array 
-    /// while selecting all elements so using random high timestamp
-    const allPrices = makeArrayOfObjBeforeTime(marketTrades, 997199254740991).map(e => e.price)
-        .concat(makeArrayOfObjBeforeTime(stratCurrentOVB, 997199254740991).map(e => e.price))
-        .concat(makeArrayOfObjBeforeTime(stratTrades, 997199254740991).map(e => e.price))
-    return {min: Math.min(...allPrices), max: Math.max(...allPrices)}
-}
+class SelectDates {
+    constructor(timestamp, marketTradesObjByDateKeys, stratCurrentOVBobjbyDateKeys, stratTradesObjByDateKeys, spotSpreadDataObjByDateKeys){
+        this.timestamp = timestamp;
+        this.marketTradesObjByDateKeys = marketTradesObjByDateKeys;
+        this.stratCurrentOVBobjbyDateKeys = stratCurrentOVBobjbyDateKeys;
+        this.stratTradesObjByDateKeys = stratTradesObjByDateKeys;
+        this.spotSpreadDataObjByDateKeys = spotSpreadDataObjByDateKeys;
+        this.marketTrades = this.getArrayOfObjsBeforeThisDate(this.marketTradesObjByDateKeys, this.timestamp);
+        this.stratCurrentOVB = this.getArrayOfObjsBeforeThisDate(this.stratCurrentOVBobjbyDateKeys, this.timestamp);
+        this.stratTrades = this.getArrayOfObjsBeforeThisDate(this.stratTradesObjByDateKeys, this.timestamp);
+        this.spotSpreadData = this.findSpotSpreadData(this.spotSpreadDataObjByDateKeys)
+    }
 
-function makeArrayOfObjBeforeTime(objTimeKeys, currentTime) {
-    const beforeKeys = Object.keys(objTimeKeys).filter(key => {
-        return parseFloat(key) < currentTime
-    })
-    // console.log(beforeKeys)
-    var arrayObjs = []
-    beforeKeys.forEach(key => {
-        arrayObjs.push(objTimeKeys[key])
-    });
-    return arrayObjs
-}
+    getArrayOfObjsBeforeThisDate(objTimeKeys, currentTime) {
+        const beforeKeys = Object.keys(objTimeKeys).filter(key => {
+            return parseFloat(key) < currentTime
+        })
+        // console.log(beforeKeys)
+        var arrayObjs = []
+        beforeKeys.forEach(key => {
+            arrayObjs.push(objTimeKeys[key])
+        });
+        return arrayObjs
+    }
 
-var marketTradesNow = makeArrayOfObjBeforeTime(marketTrades, time)
-var stratCurrentOVBnow = makeArrayOfObjBeforeTime(stratCurrentOVB, time)
-var stratTradesNow = makeArrayOfObjBeforeTime(stratTrades, time)
+    minmaxPrices() {
+        /// here we use a function to select object before a date, only to transform object to array 
+        /// while selecting all elements so using random high timestamp
+        const allPrices = this.getArrayOfObjsBeforeThisDate(marketTradesObjByDateKeys, 997199254740991).map(e => e.price)
+            .concat(this.getArrayOfObjsBeforeThisDate(stratCurrentOVBobjbyDateKeys, 997199254740991).map(e => e.price))
+            .concat(this.getArrayOfObjsBeforeThisDate(stratTradesObjByDateKeys, 997199254740991).map(e => e.price))
+        return {min: Math.min(...allPrices), max: Math.max(...allPrices)}
+    }
+
+    findSpotSpreadData(spotSpreadDataObjByDateKeys) {
+        let orderBookDataCompare = {timestamp: null, delta: null}
+        Object.keys(spotSpreadDataObjByDateKeys).forEach(key => {
+            if (!orderBookDataCompare.timestamp) {
+                orderBookDataCompare.timestamp = parseFloat(key);
+                orderBookDataCompare.delta     = parseFloat(key) - time;
+            }
+            const prevDelta = orderBookDataCompare.delta;
+            const newDelta = parseFloat(key) - time;
+            if (newDelta <= 0 && newDelta > prevDelta) {
+                orderBookDataCompare.timestamp = key;
+                orderBookDataCompare.delta     = newDelta;
+            } 
+        })
+
+        return spotSpreadDataObjByDateKeys[`${orderBookDataCompare.timestamp}`]
+    }
+} 
 
 
 /// - render price highlight, last trade highlight and current bid-ask spread.
 
-let orderBookDataCompare = {timestamp: null, delta: null}
-Object.keys(spotSpreadData).forEach(key => {
-    if (!orderBookDataCompare.timestamp) {
-        orderBookDataCompare.timestamp = parseFloat(key);
-        orderBookDataCompare.delta     = parseFloat(key) - time;
-    }
-    const prevDelta = orderBookDataCompare.delta;
-    const newDelta = parseFloat(key) - time;
-    if (newDelta <= 0 && newDelta > prevDelta) {
-        orderBookDataCompare.timestamp = key;
-        orderBookDataCompare.delta     = newDelta;
-    } 
-})
 
-let orderBookData = spotSpreadData[`${orderBookDataCompare.timestamp}`]
+
 
 /// - make overall render function
-js data has been set from sh Scripts
-select time objs only
-create PageObj
-render it
+// js data has been set from sh Scripts
+// select time objs only
+// create PageObj
+// render it
 /// - work on time variable updating render function
 /// - work on interface on how to interact with time variable from page.
 /// refactor.
