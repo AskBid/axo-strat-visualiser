@@ -142,9 +142,9 @@ class SelectDates {
 } 
 
 /// - render price highlight, last trade highlight and current bid-ask spread.
-function render(timestamp) {
+function session(timestamp) {
     if (!timestamp) {
-        timestamp = 1717974902
+        timestamp = 1717974902  // 10 digits = seconds  
     }
 
     const selectDates = new SelectDates(
@@ -152,7 +152,8 @@ function render(timestamp) {
         marketTrades, 
         stratCurrentOVB, 
         stratTrades, 
-        spotSpreadData) 
+        spotSpreadData
+    ) 
 
     const minmax = selectDates.minmaxPrices()
     const ticksPAD = 10;
@@ -166,7 +167,8 @@ function render(timestamp) {
         selectDates.marketTrades, 
         selectDates.stratCurrentOVB, 
         selectDates.stratTrades, 
-        selectDates.spotSpreadData)
+        selectDates.spotSpreadData
+    )
     
     frameObj.populate()
     var sortedPricesKeys = Object.keys(frameObj.frame).sort()
@@ -174,6 +176,64 @@ function render(timestamp) {
     return frameObj
 }
 
+function renderRow(objPriceLevel, precision, multiplier) {
+    const table = document.getElementById('maintable');
+    //objPriceLevel : {buylo: 210092.0019521317, bought: null, sellmos: 210627, price: '0.002810', buymos: null, sold: null, selllo: null}
+
+    // Create a new <tr> element
+    const price = objPriceLevel.price //round(max - (TICK * (index+1)), TICK)
+    
+    const absorberL = document.createElement('td');
+    const absorberR = document.createElement('td');
+    absorberL.setAttribute('class', `absorbing-column cell`);
+    absorberR.setAttribute('class', `absorbing-column cell`);
+    
+    const sellTD = document.createElement('td');
+    sellTD.setAttribute('id', `${price}-sell`)
+    sellTD.textContent = ``;
+    sellTD.setAttribute('class', `cell sellTD`);
+    
+    const prcTD = document.createElement('td');
+    prcTD.textContent = `${price}`;
+    prcTD.setAttribute('id', `${price}-box`)
+    prcTD.setAttribute('class', `cell priceTD`);
+
+    const buyTD = document.createElement('td');
+    buyTD.setAttribute('id', `${price}-buy`)
+    buyTD.textContent = ``;
+    buyTD.setAttribute('class', `cell buyTD`);
+
+    const bidTD = document.createElement('td');
+    bidTD.setAttribute('id', `${price}-bid`)
+    bidTD.setAttribute('class', `cell bidTD`);
+
+    const askTD = document.createElement('td');
+    askTD.setAttribute('id', `${price}-ask`)
+    askTD.setAttribute('class', `cell askTD`);
+
+    const askOVBTD = document.createElement('td');
+    askOVBTD.setAttribute('id', `${price}-askOVB`)
+    askOVBTD.setAttribute('class', `cell OVB`);
+
+    const bidOVBTD = document.createElement('td');
+    bidOVBTD.setAttribute('id', `${price}-bidOVB`)
+    bidOVBTD.setAttribute('class', `cell OVB`);
+
+    // Append the new <tr> to an existing parent element (e.g., <body>)
+    const rowTR = document.createElement('tr');
+    rowTR.setAttribute('class', 'rowTR');
+    rowTR.setAttribute('id', `${price}-row`)
+    rowTR.appendChild(absorberL);
+    rowTR.appendChild(bidOVBTD);
+    rowTR.appendChild(bidTD);
+    rowTR.appendChild(sellTD);
+    rowTR.appendChild(prcTD);
+    rowTR.appendChild(buyTD);
+    rowTR.appendChild(askTD);
+    rowTR.appendChild(askOVBTD);
+    rowTR.appendChild(absorberR);
+    table.appendChild(rowTR);
+}
 
 
 /// - make overall render function
