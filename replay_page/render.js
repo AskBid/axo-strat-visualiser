@@ -172,6 +172,9 @@ function session(timestamp) {
     
     frameObj.populate()
     var sortedPricesKeys = Object.keys(frameObj.frame).sort()
+    sortedPricesKeys.forEach(priceLevel => {
+        renderRow(frameObj.frame[priceLevel], 0.01, MULTIPLIER)
+    })
 
     return frameObj
 }
@@ -181,7 +184,7 @@ function renderRow(objPriceLevel, precision, multiplier) {
     //objPriceLevel : {buylo: 210092.0019521317, bought: null, sellmos: 210627, price: '0.002810', buymos: null, sold: null, selllo: null}
 
     // Create a new <tr> element
-    const price = objPriceLevel.price //round(max - (TICK * (index+1)), TICK)
+    const price = objPriceLevel.price //round(max - (TICK * (ind    ex+1)), TICK)
     
     const absorberL = document.createElement('td');
     const absorberR = document.createElement('td');
@@ -190,7 +193,7 @@ function renderRow(objPriceLevel, precision, multiplier) {
     
     const sellTD = document.createElement('td');
     sellTD.setAttribute('id', `${price}-sell`)
-    sellTD.textContent = ``;
+    sellTD.textContent = objPriceLevel.sellmos ? `${objPriceLevel.sellmos}` : "";
     sellTD.setAttribute('class', `cell sellTD`);
     
     const prcTD = document.createElement('td');
@@ -200,29 +203,48 @@ function renderRow(objPriceLevel, precision, multiplier) {
 
     const buyTD = document.createElement('td');
     buyTD.setAttribute('id', `${price}-buy`)
-    buyTD.textContent = ``;
+    buyTD.textContent = objPriceLevel.buymos ? `${objPriceLevel.buymos}` : "";
     buyTD.setAttribute('class', `cell buyTD`);
-
+    
     const bidTD = document.createElement('td');
     bidTD.setAttribute('id', `${price}-bid`)
+    bidTD.textContent = objPriceLevel.bought ? `${objPriceLevel.bought}` : "";
     bidTD.setAttribute('class', `cell bidTD`);
 
     const askTD = document.createElement('td');
     askTD.setAttribute('id', `${price}-ask`)
+    askTD.textContent = objPriceLevel.sold ? `${objPriceLevel.sold}` : "";
     askTD.setAttribute('class', `cell askTD`);
 
-    const askOVBTD = document.createElement('td');
-    askOVBTD.setAttribute('id', `${price}-askOVB`)
-    askOVBTD.setAttribute('class', `cell OVB`);
-
-    const bidOVBTD = document.createElement('td');
-    bidOVBTD.setAttribute('id', `${price}-bidOVB`)
-    bidOVBTD.setAttribute('class', `cell OVB`);
-
-    // Append the new <tr> to an existing parent element (e.g., <body>)
     const rowTR = document.createElement('tr');
     rowTR.setAttribute('class', 'rowTR');
     rowTR.setAttribute('id', `${price}-row`)
+
+    const askOVBTD = document.createElement('td');
+    askOVBTD.setAttribute('id', `${price}-askOVB`)
+    if (objPriceLevel.selllo) {
+        rowTR.setAttribute('class', 'rowTR rowHighlight');
+        askOVBTD.textContent = `${objPriceLevel.selllo} L`;
+        askOVBTD.setAttribute('class', `cell OVB activeaskOVB`);
+        console.log(`cell OVB activeaskOVB`)
+    } else {
+        askOVBTD.textContent = ""
+        askOVBTD.setAttribute('class', `cell OVB`);
+    }
+
+    const bidOVBTD = document.createElement('td');
+    bidOVBTD.setAttribute('id', `${price}-bidOVB`);
+    if (objPriceLevel.buylo) {
+        rowTR.setAttribute('class', 'rowTR rowHighlight');
+        bidOVBTD.textContent = `${objPriceLevel.buylo} L`;
+        bidOVBTD.setAttribute('class', `cell OVB activebidOVB`);
+    } else {
+        bidOVBTD.textContent = "";
+        bidOVBTD.setAttribute('class', `cell OVB`);
+    }
+    
+
+    // Append the new <tr> to an existing parent element (e.g., <body>)
     rowTR.appendChild(absorberL);
     rowTR.appendChild(bidOVBTD);
     rowTR.appendChild(bidTD);
