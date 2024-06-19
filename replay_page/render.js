@@ -3,7 +3,8 @@ class FrameOBJ {
         this.marketTrades = marketTrades;
         this.stratCurrentOVB = stratCurrentOVB;
         this.stratTrades = stratTrades;
-        this.Highlights = this.buildHighlight(spotSpreadData);
+        this.spotSpreadData = spotSpreadData
+        this.Highlights = this.buildHighlight(this.spotSpreadData);
         this.TICK = TICK;
         this.MAX = MAX;
         this.MIN = MIN;
@@ -65,22 +66,12 @@ class FrameOBJ {
 
     buildHighlight(spotSpreadData) {
         var highlights = {bid: null, spot: null, ask: null, timestamp: null}
-        highlights.spot = roundtext(spotSpreadData.spot)
+        highlights.spot = roundtext(spotSpreadData.spot, this.TICK)
         highlights.bid = spotSpreadData.spot - ((spotSpreadData.spot * (spotSpreadData.pct_spread/100)) / 2)
         highlights.ask = spotSpreadData.spot + ((spotSpreadData.spot * (spotSpreadData.pct_spread/100)) / 2)
         return highlights
     }
 }
-
-const TICK = 0.000005;
-const MULTIPLIER = 1;
-const minmax = minmaxPrices();
-const ticksPAD = 10;
-const MIN = roundnum(minmax.min - (ticksPAD * TICK), TICK);
-const MAX = roundnum(minmax.max + (ticksPAD * TICK), TICK);
-var time = 1717974902;
-
-
 
 class SelectDates {
     constructor(timestamp, marketTradesObjByDateKeys, stratCurrentOVBobjbyDateKeys, stratTradesObjByDateKeys, spotSpreadDataObjByDateKeys){
@@ -94,7 +85,7 @@ class SelectDates {
         this.stratTrades = this.getArrayOfObjsBeforeThisDate(this.stratTradesObjByDateKeys, this.timestamp);
         this.spotSpreadData = this.findSpotSpreadData(this.spotSpreadDataObjByDateKeys)
     }
-
+    
     getArrayOfObjsBeforeThisDate(objTimeKeys, currentTime) {
         const beforeKeys = Object.keys(objTimeKeys).filter(key => {
             return parseFloat(key) < currentTime
@@ -110,9 +101,9 @@ class SelectDates {
     minmaxPrices() {
         /// here we use a function to select object before a date, only to transform object to array 
         /// while selecting all elements so using random high timestamp
-        const allPrices = this.getArrayOfObjsBeforeThisDate(marketTradesObjByDateKeys, 997199254740991).map(e => e.price)
-            .concat(this.getArrayOfObjsBeforeThisDate(stratCurrentOVBobjbyDateKeys, 997199254740991).map(e => e.price))
-            .concat(this.getArrayOfObjsBeforeThisDate(stratTradesObjByDateKeys, 997199254740991).map(e => e.price))
+        const allPrices = this.getArrayOfObjsBeforeThisDate(this.marketTradesObjByDateKeys, 997199254740991).map(e => e.price)
+        .concat(this.getArrayOfObjsBeforeThisDate(this.stratCurrentOVBobjbyDateKeys, 997199254740991).map(e => e.price))
+        .concat(this.getArrayOfObjsBeforeThisDate(this.stratTradesObjByDateKeys, 997199254740991).map(e => e.price))
         return {min: Math.min(...allPrices), max: Math.max(...allPrices)}
     }
 
@@ -135,9 +126,31 @@ class SelectDates {
     }
 } 
 
-
 /// - render price highlight, last trade highlight and current bid-ask spread.
+function render() {
+    const selectDates = new SelectDates(
+        1717974902, 
+        marketTrades, 
+        stratCurrentOVB, 
+        stratTrades, 
+        spotSpreadData) 
 
+    const minmax = selectDates.minmaxPrices()
+    const ticksPAD = 10;
+    const TICK = 0.000005;
+    const MIN = roundnum(minmax.min - (ticksPAD * TICK), TICK);
+    const MAX = roundnum(minmax.max + (ticksPAD * TICK), TICK);
+    const MULTIPLIER = 1;
+
+    const frameObj = new FrameOBJ(
+        TICK, MIN, MAX, 
+        selectDates.marketTrades, 
+        selectDates.stratCurrentOVB, 
+        selectDates.stratTrades, 
+        selectDates.spotSpreadData)
+    
+    return frameObj
+}
 
 
 
