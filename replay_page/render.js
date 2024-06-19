@@ -4,12 +4,13 @@ class FrameOBJ {
         this.stratCurrentOVB = stratCurrentOVB;
         this.stratTrades = stratTrades;
         this.spotSpreadData = spotSpreadData
+        this.lastTrade = {timestamp: "0"};
         this.TICK = TICK;
         this.precision = TICK;
         this.Highlights = this.buildHighlight(this.spotSpreadData);
         this.MAX = MAX;
         this.MIN = MIN;
-        this.FrameObj = this.initFrameObj();
+        this.frame = this.initFrameObj();
     }
 
     setPrecision(float) {
@@ -39,11 +40,20 @@ class FrameOBJ {
     populate() {
         this.marketTrades.forEach(obj => {
             const price = roundtext(obj.price, this.TICK)
+
+            /// using this iteration to find latestTrade too.
+            const currentTimstamp = parseFloat(obj.timestamp)
+            const latestTimestamp = parseFloat(this.lastTrade.timestamp)
+            if (currentTimstamp > latestTimestamp) {
+                this.lastTrade = obj;
+            }
+            ///
+
             if (price >= this.MIN && price <= this.MAX) {
                 if (obj.orderSide === "SELL") {
-                    this.FrameObj[price].sellmos = this.FrameObj[price].sellmos + obj.amount
+                    this.frame[price].sellmos = this.frame[price].sellmos + obj.amount
                 } else {
-                    this.FrameObj[price].buymos  = this.FrameObj[price].buymos + obj.amount
+                    this.frame[price].buymos  = this.frame[price].buymos + obj.amount
                 }
             }
         });
@@ -51,9 +61,9 @@ class FrameOBJ {
             const price = roundtext(obj.price, this.TICK)
             if (price >= this.MIN && price <= this.MAX) {
                 if (obj.orderSide === "ask") {
-                    this.FrameObj[price].selllo = this.FrameObj[price].selllo + obj.amount
+                    this.frame[price].selllo = this.frame[price].selllo + obj.amount
                 } else {
-                    this.FrameObj[price].buylo  = this.FrameObj[price].buylo + obj.amount
+                    this.frame[price].buylo  = this.frame[price].buylo + obj.amount
                 }
             }
         });
@@ -61,9 +71,9 @@ class FrameOBJ {
             const price = roundtext(obj.price, this.TICK)
             if (price >= this.MIN && price <= this.MAX) {
                 if (obj.orderSide === "SELL") {
-                    this.FrameObj[price].sold = this.FrameObj[price].sold + obj.amount
+                    this.frame[price].sold = this.frame[price].sold + obj.amount
                 } else {
-                    this.FrameObj[price].bought  = this.FrameObj[price].bought + obj.amount
+                    this.frame[price].bought  = this.frame[price].bought + obj.amount
                 }
             }
         });
@@ -132,9 +142,13 @@ class SelectDates {
 } 
 
 /// - render price highlight, last trade highlight and current bid-ask spread.
-function render() {
+function render(timestamp) {
+    if (!timestamp) {
+        timestamp = 1717974902
+    }
+
     const selectDates = new SelectDates(
-        1717974902, 
+        timestamp, 
         marketTrades, 
         stratCurrentOVB, 
         stratTrades, 
@@ -154,6 +168,9 @@ function render() {
         selectDates.stratTrades, 
         selectDates.spotSpreadData)
     
+    frameObj.populate()
+    var sortedPricesKeys = Object.keys(frameObj.frame).sort()
+
     return frameObj
 }
 
