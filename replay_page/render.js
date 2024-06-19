@@ -5,10 +5,15 @@ class FrameOBJ {
         this.stratTrades = stratTrades;
         this.spotSpreadData = spotSpreadData
         this.TICK = TICK;
+        this.precision = TICK;
         this.Highlights = this.buildHighlight(this.spotSpreadData);
         this.MAX = MAX;
         this.MIN = MIN;
         this.FrameObj = this.initFrameObj();
+    }
+
+    setPrecision(float) {
+        this.precision = float
     }
 
     initFrameObj() {
@@ -16,7 +21,7 @@ class FrameOBJ {
         let obj = {}
         const maxPlus1 = this.MAX;
         while (price < (maxPlus1)) {
-            const priceText = (price + this.TICK).toFixed(spaces)
+            const priceText = (price + this.TICK).toFixed(String(this.precision).split(".")[1].length)
             price = parseFloat(priceText);
             obj[priceText] = {
                 'buylo': null, 
@@ -66,7 +71,7 @@ class FrameOBJ {
 
     buildHighlight(spotSpreadData) {
         var highlights = {bid: null, spot: null, ask: null, timestamp: null}
-        highlights.spot = roundtext(spotSpreadData.spot, this.TICK)
+        highlights.spot = roundtext(spotSpreadData.spot, this.precision)
         highlights.bid = spotSpreadData.spot - ((spotSpreadData.spot * (spotSpreadData.pct_spread/100)) / 2)
         highlights.ask = spotSpreadData.spot + ((spotSpreadData.spot * (spotSpreadData.pct_spread/100)) / 2)
         return highlights
