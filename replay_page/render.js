@@ -156,7 +156,7 @@ class SelectDates {
 } 
 
 /// - render price highlight, last trade highlight and current bid-ask spread.
-async function session(timestamp) {
+async function render(timestamp) {
     if (!timestamp) {
         timestamp = 1717974902  // 10 digits = seconds  
     }
@@ -196,21 +196,41 @@ async function session(timestamp) {
         promises.push(await renderRow(frameObj.frame[element], 0.1, MULTIPLIER))
     }
 
-    console.log(Date.now())
+    console.log(`date now: ${Date.now()}`)
     
     await Promise.all(promises)
     
     return Promise.resolve(timestamp);
 }
 
-window.onload = async function() {
-    await session()
+async function main() {
+    var timestamp = 1718893753
+    for (let index = 0; index < 1000; index++) {
+        const promises = [];
+        promises.push(await render(timestamp))
+        promises.push(await sleep(100));
+        promises.push(await clearRender())
+        timestamp = timestamp + 10
+        await Promise.all(promises)
+    }
+}
+
+window.onload = main
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function clearRender() {
     const table = document.getElementById('maintable');
     const trs = table.getElementsByClassName('rowTR');
+    const promises = [];
     while (trs.length > 0) {
         trs[0].parentNode.removeChild(trs[0]);
+        promises.push(Promise.resolve(trs[0]))
     }
-    await session()
+    await Promise.all(promises)
+    return Promise.resolve("Table Rows DELETED.");
 }
 
 async function renderRow(objPriceLevel, precision, multiplier) {
