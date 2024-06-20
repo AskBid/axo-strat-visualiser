@@ -157,6 +157,8 @@ class SelectDates {
 
 /// - render price highlight, last trade highlight and current bid-ask spread.
 async function render(timestamp) {
+    await clearRender()
+
     if (!timestamp) {
         timestamp = 1717974902  // 10 digits = seconds  
     }
@@ -196,6 +198,7 @@ async function render(timestamp) {
         promises.push(await renderRow(frameObj.frame[element], 0.1, MULTIPLIER))
     }
 
+    console.log(`frame with timestamp ${timestamp} was rendered.`)
     console.log(`date now: ${Date.now()}`)
     
     await Promise.all(promises)
@@ -204,15 +207,7 @@ async function render(timestamp) {
 }
 
 async function main() {
-    var timestamp = 1718893753
-    for (let index = 0; index < 1000; index++) {
-        const promises = [];
-        promises.push(await render(timestamp))
-        promises.push(await sleep(100));
-        promises.push(await clearRender())
-        timestamp = timestamp + 10
-        await Promise.all(promises)
-    }
+    await render()
 }
 
 window.onload = main
