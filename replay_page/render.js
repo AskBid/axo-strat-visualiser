@@ -1,5 +1,13 @@
 class FrameOBJ {
-    constructor(TICK, MIN, MAX, marketTrades, stratCurrentOVB, stratTrades, spotSpreadData) {
+    constructor(
+        TICK, 
+        MIN, 
+        MAX, 
+        marketTrades, 
+        stratCurrentOVB, 
+        stratTrades, 
+        spotSpreadData
+    ) {
         this.marketTrades = marketTrades;
         this.stratCurrentOVB = stratCurrentOVB;
         this.stratTrades = stratTrades;
@@ -89,7 +97,13 @@ class FrameOBJ {
 }
 
 class SelectDates {
-    constructor(timestamp, marketTradesObjByDateKeys, stratCurrentOVBobjbyDateKeys, stratTradesObjByDateKeys, spotSpreadDataObjByDateKeys){
+    constructor(
+        timestamp, 
+        marketTradesObjByDateKeys, 
+        stratCurrentOVBobjbyDateKeys, 
+        stratTradesObjByDateKeys, 
+        spotSpreadDataObjByDateKeys
+    ){
         this.timestamp = timestamp;
         this.marketTradesObjByDateKeys = marketTradesObjByDateKeys;
         this.stratCurrentOVBobjbyDateKeys = stratCurrentOVBobjbyDateKeys;
@@ -160,7 +174,7 @@ function session(timestamp) {
     const TICK = 0.000005;
     const MIN = roundnum(minmax.min - (ticksPAD * TICK), TICK);
     const MAX = roundnum(minmax.max + (ticksPAD * TICK), TICK);
-    const MULTIPLIER = 1;
+    const MULTIPLIER = 1000;
 
     const frameObj = new FrameOBJ(
         TICK, MIN, MAX, 
@@ -171,9 +185,9 @@ function session(timestamp) {
     )
     
     frameObj.populate()
-    var sortedPricesKeys = Object.keys(frameObj.frame).sort()
+    var sortedPricesKeys = Object.keys(frameObj.frame).sort().reverse()
     sortedPricesKeys.forEach(priceLevel => {
-        renderRow(frameObj.frame[priceLevel], 0.01, MULTIPLIER)
+        renderRow(frameObj.frame[priceLevel], 0.1, MULTIPLIER)
     })
 
     return frameObj
@@ -193,7 +207,7 @@ function renderRow(objPriceLevel, precision, multiplier) {
     
     const sellTD = document.createElement('td');
     sellTD.setAttribute('id', `${price}-sell`)
-    sellTD.textContent = objPriceLevel.sellmos ? `${objPriceLevel.sellmos}` : "";
+    sellTD.textContent = objPriceLevel.sellmos ? `${roundtext(objPriceLevel.sellmos, precision, multiplier)}` : "";
     sellTD.setAttribute('class', `cell sellTD`);
     
     const prcTD = document.createElement('td');
@@ -203,17 +217,17 @@ function renderRow(objPriceLevel, precision, multiplier) {
 
     const buyTD = document.createElement('td');
     buyTD.setAttribute('id', `${price}-buy`)
-    buyTD.textContent = objPriceLevel.buymos ? `${objPriceLevel.buymos}` : "";
+    buyTD.textContent = objPriceLevel.buymos ? `${roundtext(objPriceLevel.buymos, precision, multiplier)}` : "";
     buyTD.setAttribute('class', `cell buyTD`);
     
     const bidTD = document.createElement('td');
     bidTD.setAttribute('id', `${price}-bid`)
-    bidTD.textContent = objPriceLevel.bought ? `${objPriceLevel.bought}` : "";
+    bidTD.textContent = objPriceLevel.bought ? `${roundtext(objPriceLevel.bought, precision, multiplier)}` : "";
     bidTD.setAttribute('class', `cell bidTD`);
 
     const askTD = document.createElement('td');
     askTD.setAttribute('id', `${price}-ask`)
-    askTD.textContent = objPriceLevel.sold ? `${objPriceLevel.sold}` : "";
+    askTD.textContent = objPriceLevel.sold ? `${roundtext(objPriceLevel.sold, precision, multiplier)}` : "";
     askTD.setAttribute('class', `cell askTD`);
 
     const rowTR = document.createElement('tr');
@@ -224,7 +238,7 @@ function renderRow(objPriceLevel, precision, multiplier) {
     askOVBTD.setAttribute('id', `${price}-askOVB`)
     if (objPriceLevel.selllo) {
         rowTR.setAttribute('class', 'rowTR rowHighlight');
-        askOVBTD.textContent = `${objPriceLevel.selllo} L`;
+        askOVBTD.textContent = `${roundtext(objPriceLevel.selllo, precision, multiplier)} L`;
         askOVBTD.setAttribute('class', `cell OVB activeaskOVB`);
         console.log(`cell OVB activeaskOVB`)
     } else {
@@ -236,14 +250,13 @@ function renderRow(objPriceLevel, precision, multiplier) {
     bidOVBTD.setAttribute('id', `${price}-bidOVB`);
     if (objPriceLevel.buylo) {
         rowTR.setAttribute('class', 'rowTR rowHighlight');
-        bidOVBTD.textContent = `${objPriceLevel.buylo} L`;
+        bidOVBTD.textContent = `${roundtext(objPriceLevel.buylo, precision, multiplier)} L`;
         bidOVBTD.setAttribute('class', `cell OVB activebidOVB`);
     } else {
         bidOVBTD.textContent = "";
         bidOVBTD.setAttribute('class', `cell OVB`);
     }
     
-
     // Append the new <tr> to an existing parent element (e.g., <body>)
     rowTR.appendChild(absorberL);
     rowTR.appendChild(bidOVBTD);
