@@ -156,7 +156,7 @@ class SelectDates {
 } 
 
 /// - render price highlight, last trade highlight and current bid-ask spread.
-function session(timestamp) {
+async function session(timestamp) {
     if (!timestamp) {
         timestamp = 1717974902  // 10 digits = seconds  
     }
@@ -186,15 +186,36 @@ function session(timestamp) {
     
     frameObj.populate()
     var sortedPricesKeys = Object.keys(frameObj.frame).sort().reverse()
-    sortedPricesKeys.forEach(priceLevel => {
-        renderRow(frameObj.frame[priceLevel], 0.1, MULTIPLIER)
-    })
+    // sortedPricesKeys.forEach(priceLevel => {
+    //     renderRow(frameObj.frame[priceLevel], 0.1, MULTIPLIER)
+    // })
+    const promises = [];
 
-    return frameObj
+    for (let index = 0; index < sortedPricesKeys.length; index++) {
+        const element = sortedPricesKeys[index];
+        promises.push(await renderRow(frameObj.frame[element], 0.1, MULTIPLIER))
+    }
+
+    console.log(Date.now())
+    
+    await Promise.all(promises)
+    
+    return Promise.resolve(timestamp);
 }
 
-function renderRow(objPriceLevel, precision, multiplier) {
+window.onload = async function() {
+    await session()
     const table = document.getElementById('maintable');
+    const trs = table.getElementsByClassName('rowTR');
+    while (trs.length > 0) {
+        trs[0].parentNode.removeChild(trs[0]);
+    }
+    await session()
+}
+
+async function renderRow(objPriceLevel, precision, multiplier) {
+    const table = document.getElementById('maintable');
+    
     //objPriceLevel : {buylo: 210092.0019521317, bought: null, sellmos: 210627, price: '0.002810', buymos: null, sold: null, selllo: null}
 
     // Create a new <tr> element
@@ -240,7 +261,6 @@ function renderRow(objPriceLevel, precision, multiplier) {
         rowTR.setAttribute('class', 'rowTR rowHighlight');
         askOVBTD.textContent = `${roundtext(objPriceLevel.selllo, precision, multiplier)} L`;
         askOVBTD.setAttribute('class', `cell OVB activeaskOVB`);
-        console.log(`cell OVB activeaskOVB`)
     } else {
         askOVBTD.textContent = ""
         askOVBTD.setAttribute('class', `cell OVB`);
@@ -268,6 +288,8 @@ function renderRow(objPriceLevel, precision, multiplier) {
     rowTR.appendChild(askOVBTD);
     rowTR.appendChild(absorberR);
     table.appendChild(rowTR);
+
+    return Promise.resolve(objPriceLevel);
 }
 
 
