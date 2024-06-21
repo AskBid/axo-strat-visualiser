@@ -1,8 +1,14 @@
 const fs = require("fs");
 
+var location_to_read_from = `${process.argv[2]}`
+if (location_to_read_from == "undefined") {
+    location_to_read_from = "./replay_database"
+}
+console.log(`base location to read from: ${location_to_read_from}`)
+
 const timestampNow = Date.now()
 // strategy trades
-fs.readFile("./replay_database/stratTrades_ReplayDatabase.json", "utf8", (err, jsonString) => {
+fs.readFile(`${location_to_read_from}/stratTrades_ReplayDatabase.json`, "utf8", (err, jsonString) => {
     if (err) {
         console.log("File read failed:", err);
         return;
@@ -21,7 +27,7 @@ fs.readFile("./replay_database/stratTrades_ReplayDatabase.json", "utf8", (err, j
 });
 
 // current OVB
-fs.readFile("./replay_database/stratCurrentOVB_ReplayDatabase.json", "utf8", (err, jsonString) => {
+fs.readFile(`${location_to_read_from}/stratCurrentOVB_ReplayDatabase.json`, "utf8", (err, jsonString) => {
     if (err) {
         console.log("File read failed:", err);
         return;
@@ -40,7 +46,7 @@ fs.readFile("./replay_database/stratCurrentOVB_ReplayDatabase.json", "utf8", (er
 });
 
 // market trades
-fs.readFile("./replay_database/marketTrades_ReplayDatabase.json", "utf8", (err, jsonString) => {
+fs.readFile(`${location_to_read_from}/marketTrades_ReplayDatabase.json`, "utf8", (err, jsonString) => {
     if (err) {
       console.log("File read failed:", err);
       return;
@@ -60,7 +66,7 @@ fs.readFile("./replay_database/marketTrades_ReplayDatabase.json", "utf8", (err, 
 });
 
 // spot price
-fs.readFile("./replay_database/orderBook_ReplayDatabase.json", "utf8", (err, jsonString) => {
+fs.readFile(`${location_to_read_from}/orderBook_ReplayDatabase.json`, "utf8", (err, jsonString) => {
     if (err) {
       console.log("File read failed:", err);
       return;
