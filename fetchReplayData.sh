@@ -6,6 +6,8 @@ STRAT=$1
 ASSET=$2
 LOCATION=$3
 echo "inside fetchReplayData.sh"
+current_datetime="$(date +'%Y-%m-%d %H:%M:%S')"
+echo "Current date and time: $current_datetime"
 echo "ASSET: ${ASSET}"
 echo "STRAT: ${STRAT}"
 
@@ -14,16 +16,16 @@ if [ "$ASSET" = "-" ] || [ -z "$ASSET" ] || [ "$ASSET" = "AXO" ]; then
 fi
 
 if [ "$LOCATION" = "-" ] || [ -z "$LOCATION" ]; then
-    LOCATION="./replay_database"  # change to default if second argument is "-" or empty string
+    LOCATION="."  # change to default if second argument is "-" or empty string
 fi
 
 # fetch()
-. ./fetch_data.sh
-fetch_data $STRAT $ASSET $LOCATION
+. $LOCATION/fetch_data.sh
+fetch_data $STRAT $ASSET $LOCATION/replay_database
 echo "data fetched (curls) done."
 
 # storageFactory()
-node replayStorageFactory.js $STRAT $ASSET
+node $LOCATION/replayStorageFactory.js $STRAT $ASSET
 echo "storage updated."
 
 
