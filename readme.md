@@ -85,6 +85,8 @@ need to refactor the render_page js logic to the new logic present in replay_pag
 
 ### brief use of replay functions:
 
+run `./initiateReplayStorage.sh` to clean up the folder and prepare empty files. (will delete all existing, move somewhere else if required)
+
 `fetchReplayData.sh` can be used with a cron job to gather data from AXO api every x time.
 
 when data is enough and ready run `node renderReplayStorageFactory.js` to tranfer the JSON to js files that can be read from the js inside `replay_page/`.
