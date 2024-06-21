@@ -19,9 +19,11 @@ if [ "$LOCATION" = "-" ] || [ -z "$LOCATION" ]; then
     LOCATION="."  # change to default if second argument is "-" or empty string
 fi
 
+echo "Location inside fetchReplayData.sh: $LOCATION"
+
 # fetch()
 . $LOCATION/fetch_data.sh
-fetch_data $STRAT $ASSET $LOCATION/replay_database
+fetch_data $STRAT $ASSET $LOCATION/replay_database/
 echo "data fetched (curls) done."
 
 # storageFactory()

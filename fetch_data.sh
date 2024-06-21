@@ -12,7 +12,7 @@ fetch_data() {
     echo "running fetch_data() ..."
     echo "STRAT: ${STRAT}"
     echo "ASSET: ${ASSET}"
-    echo "Location: ${DIFFERLOCATION}"
+    echo "Location inside fetch_data(): ${DIFFERLOCATION}"
 
     if [ "$ASSET" = "-" ] || [ -z "$ASSET" ] || [ "$ASSET" = "AXO" ]; then
         ASSET="420000029ad9527271b1b1e3c27ee065c18df70a4a4cfc3093a41a4441584f"  # change to default if second argument is "-" or empty string
