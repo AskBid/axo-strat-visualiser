@@ -4,6 +4,7 @@
 
 STRAT=$1
 ASSET=$2
+LOCATION=$3
 echo "inside fetchReplayData.sh"
 echo "ASSET: ${ASSET}"
 echo "STRAT: ${STRAT}"
@@ -12,9 +13,13 @@ if [ "$ASSET" = "-" ] || [ -z "$ASSET" ] || [ "$ASSET" = "AXO" ]; then
     ASSET="420000029ad9527271b1b1e3c27ee065c18df70a4a4cfc3093a41a4441584f"  # change to default if second argument is "-" or empty string
 fi
 
+if [ "$LOCATION" = "-" ] || [ -z "$LOCATION" ]; then
+    LOCATION="./replay_database"  # change to default if second argument is "-" or empty string
+fi
+
 # fetch()
 . ./fetch_data.sh
-fetch_data $STRAT $ASSET ./replay_database/
+fetch_data $STRAT $ASSET $LOCATION
 echo "data fetched (curls) done."
 
 # storageFactory()
