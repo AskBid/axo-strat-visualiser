@@ -78,3 +78,13 @@ To achieve this, you can give a third argument to `./renderStrat` like this:
 ```sh
 $ ./renderStrat.sh 474efaf7981c277373bbc003805a1dc5ace60f6071338dc9d0fb7273 SNEK 0.00001
 ```
+
+# UPDATE
+
+need to refactor the render_page js logic to the new logic present in replay_page.
+
+### brief use of replay functions:
+
+`fetchReplayData.sh` can you use with a cron job to gather data from AXO api every x time.
+
+when data is enough and ready run `node renderReplayStorageFactory.js` to tranfer the JSON to js files that can be read from the js inside `replay_page/`.
