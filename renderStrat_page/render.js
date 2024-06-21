@@ -225,3 +225,21 @@ soldcell.innerHTML =   `You now have: ${currentADA.toFixed(2)} ADA and ${current
 
 const profitcell = document.getElementById('profitloss');
 profitcell.innerHTML = `At the current prices:<br>if you had hold your asset you'd have:<br>${(initialADA + (initialCNT * spotPrice)).toFixed(2)} ADA<br><br>instead your strat now holds a value of:<br>${(currentADA + (currentCNT * spotPrice)).toFixed(2)} ADA<br><br>profit: ${((currentADA + (currentCNT * spotPrice))-(initialADA + (initialCNT * spotPrice))).toFixed(2)} ADA`;
+
+function buildAskBid() {
+    var highlights = {bid: null, ask: null}
+    highlights.bid = spotPrice - ((spotPrice * (pct_spread/100)) / 2)
+    highlights.ask = spotPrice + ((spotPrice * (pct_spread/100)) / 2)
+    return highlights
+}
+
+function renderAskBid(price) {
+    const roundPrice = round(price, TICK);
+    const priceTD = document.getElementById(`${roundPrice}-box`);
+    priceTD.classList.add("bidask");
+}
+
+const askbid = buildAskBid()
+
+renderAskBid(askbid.ask)
+renderAskBid(askbid.bid)
