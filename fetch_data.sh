@@ -7,6 +7,8 @@ fetch_data() {
 
     echo ""
     echo "::::"
+    current_datetime="$(date +'%Y-%m-%d %H:%M:%S')"
+    echo "Current date and time: $current_datetime"
     echo "running fetch_data() ..."
     echo "STRAT: ${STRAT}"
     echo "ASSET: ${ASSET}"

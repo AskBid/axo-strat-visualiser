@@ -89,7 +89,7 @@ class FrameOBJ {
 
     buildHighlight(spotSpreadData) {
         var highlights = {bid: null, spot: null, ask: null, timestamp: null}
-        highlights.spot = roundtext(spotSpreadData.spot, this.precision)
+        highlights.spot = spotSpreadData.spot
         highlights.bid = spotSpreadData.spot - ((spotSpreadData.spot * (spotSpreadData.pct_spread/100)) / 2)
         highlights.ask = spotSpreadData.spot + ((spotSpreadData.spot * (spotSpreadData.pct_spread/100)) / 2)
         return highlights
@@ -113,6 +113,8 @@ class SelectDates {
         this.stratCurrentOVB = this.getArrayOfObjsBeforeThisDate(this.stratCurrentOVBobjbyDateKeys, this.timestamp);
         this.stratTrades = this.getArrayOfObjsBeforeThisDate(this.stratTradesObjByDateKeys, this.timestamp);
         this.spotSpreadData = this.findSpotSpreadData(this.spotSpreadDataObjByDateKeys)
+        this.end = this.findend(this.stratCurrentOVBobjbyDateKeys);
+        this.start = this.findstart(this.stratCurrentOVBobjbyDateKeys);
     }
     
     getArrayOfObjsBeforeThisDate(objTimeKeys, currentTime) {
@@ -141,17 +143,25 @@ class SelectDates {
         Object.keys(spotSpreadDataObjByDateKeys).forEach(key => {
             if (!orderBookDataCompare.timestamp) {
                 orderBookDataCompare.timestamp = parseFloat(key);
-                orderBookDataCompare.delta     = parseFloat(key) - time;
+                orderBookDataCompare.delta     = Math.abs(parseFloat(key) - this.timestamp);
             }
             const prevDelta = orderBookDataCompare.delta;
-            const newDelta = parseFloat(key) - time;
-            if (newDelta <= 0 && newDelta > prevDelta) {
+            const newDelta = Math.abs(parseFloat(key) - this.timestamp);
+            if (newDelta < prevDelta) {
                 orderBookDataCompare.timestamp = key;
                 orderBookDataCompare.delta     = newDelta;
             } 
         })
 
         return spotSpreadDataObjByDateKeys[`${orderBookDataCompare.timestamp}`]
+    }
+
+    findstart(objWithTimeKeys) {
+        return Math.min(...Object.keys(objWithTimeKeys).map(key => parseInt(key)))
+    }
+
+    findend(objWithTimeKeys) {
+        return Math.max(...Object.keys(objWithTimeKeys).map(key => parseInt(key)))
     }
 } 
 
@@ -171,9 +181,12 @@ async function render(timestamp) {
         spotSpreadData
     ) 
 
+    console.log(`start date: ${selectDates.start}`)
+    console.log(`end date:   ${selectDates.end}`)
+
     const minmax = selectDates.minmaxPrices()
     const ticksPAD = 10;
-    const TICK = 0.000005;
+    const TICK = 0.00001;
     const MIN = roundnum(minmax.min - (ticksPAD * TICK), TICK);
     const MAX = roundnum(minmax.max + (ticksPAD * TICK), TICK);
     const MULTIPLIER = 1000;
@@ -193,21 +206,30 @@ async function render(timestamp) {
     // })
     const promises = [];
 
-    for (let index = 0; index < sortedPricesKeys.length; index++) {
-        const element = sortedPricesKeys[index];
-        promises.push(await renderRow(frameObj.frame[element], 0.1, MULTIPLIER))
+    for (const priceLevel of sortedPricesKeys) { 
+        promises.push(await renderRow(frameObj.frame[priceLevel], 0.1, MULTIPLIER))
     }
+
+    await Promise.all(promises)
+
+    renderLast(frameObj.lastTrade, frameObj.TICK)
+    renderSpotPrice(frameObj.Highlights.spot, frameObj.TICK)
+    renderAskBid(frameObj.Highlights.ask, frameObj.TICK)
+    renderAskBid(frameObj.Highlights.bid, frameObj.TICK)
 
     console.log(`frame with timestamp ${timestamp} was rendered.`)
     console.log(`date now: ${Date.now()}`)
     
-    await Promise.all(promises)
     
-    return Promise.resolve(timestamp);
+    
+    return Promise.resolve(frameObj);
 }
 
 async function main() {
-    await render()
+    for (let index = 0; index < 35000; index++) {
+        await render(1717968200 + (6*index))
+        await sleep(100)
+    }
 }
 
 window.onload = main
@@ -305,6 +327,24 @@ async function renderRow(objPriceLevel, precision, multiplier) {
     table.appendChild(rowTR);
 
     return Promise.resolve(objPriceLevel);
+}
+
+function renderLast(element, precision) {
+    const sideMO = element.orderSide == "SELL" ? "sell" : "buy"
+    const myElement = document.getElementById(`${roundtext(element.price, precision)}-${sideMO}`);
+    sideMO == "buy" ? myElement.setAttribute('class', `cell lastBuyTD`) : myElement.setAttribute('class', `cell lastSellTD`) 
+}
+
+function renderSpotPrice(spotPrice, precision) {
+    const roundSpotPrice = roundtext(spotPrice, precision);
+    const spotPriceTD = document.getElementById(`${roundSpotPrice}-box`);
+    spotPriceTD.setAttribute('class', `cell priceTD spotTD`);
+}
+
+function renderAskBid(price, precision) {
+    const roundPrice = roundtext(price, precision);
+    const priceTD = document.getElementById(`${roundPrice}-box`);
+    priceTD.classList.add("bidask");
 }
 
 

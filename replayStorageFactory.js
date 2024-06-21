@@ -3,6 +3,14 @@ const fs = require("fs");
 
 const timestampNow = (Date.now() / 1000).toFixed(0);
 
+fs.writeFile('./replay_database/ids.json', JSON.stringify({stratID: `${process.argv[2]}`}, null, 2), err => {
+    if (err) {
+        console.error(err);
+    } else {
+        console.log("stratTrades written successfully")
+    }
+});
+
 // strategy trades
 fs.readFile("./replay_database/stratTrades.json", "utf8", (err, jsonString) => {
     if (err) {
