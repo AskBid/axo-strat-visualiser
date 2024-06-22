@@ -22,7 +22,7 @@ body {
 
 th {
 	font-family: monospace;
-	color:#aaa;
+	color:#8d8d8d;
 	white-space: nowrap;
 	overflow: hidden;
 }
@@ -165,4 +165,18 @@ font-weight: bold;
 	padding: 10px 0px 10px 0px;
 }
 
+.sticky-div {
+    position: sticky;
+    left: 0; /* Position on the left side */
+    top: 0; /* Adjust as needed */
+    width: 100%; /* Set the desired width */
+    margin: auto; /* Center horizontally */
+}
+
+.inside-sticky {
+	background-color: #d2d2d2;
+	width: 30%;
+	min-height: 100px;
+	border: solid 2px black;	
+}
 /* <HEADER */
