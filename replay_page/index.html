@@ -12,16 +12,23 @@
             padding: 0;
             font-family: Arial, sans-serif;
         }
-        .container {
-            display: flex;
+        .containerH {
+            display: flex; /* comment this for unsticky */
             height: 100vh; /* Full viewport height */
+            /* flex-direction: column; */ /* uncomment this for vertical flow */
+        }
+        .containerV {
+            /* display: flex; */ /* comment this for unsticky */
+            height: 100vh; /* Full viewport height */
+            flex-direction: column; /* uncomment this for vertical flow */
         }
         .left-div {
             flex: 1; /* 1/3 width */
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f9f9f9;
+            background-color: #dfdddd;
+            flex-direction: column;
         }
         .right-div {
             flex: 2; /* 2/3 width */
@@ -39,10 +46,17 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="containerH" id="maincontainer">
         <div class="left-div">
             <!-- Content for the left div -->
-            <div>This div remains centered.</div>
+            <div id="changeLayoutDiv"><a href="#" id="changeLayoutLink">Vertical Layout &uArr;</a>	</div>
+            <div id="head"></div>
+            <div id="timeHeader">Snapshot of the strategy past orders, current VOB and Market orders at:</div>
+            <div id="time"></div>
+            <div id="Bought">bought</div>
+            <div id="Sold">sold</div>
+            <div id="profitloss">final</div>
+            <div id="currentprice"></div>
         </div>
         <div class="right-div">
             <!-- Table for the right div -->
@@ -76,5 +90,25 @@
             <script src="helpers.js"></script>
         </div>
     </div>
+
+    <script>
+        var layoutNow = "H"
+        // Get the link and the element
+        const layoutLink = document.getElementById('changeLayoutLink');
+        const layoutContainer = document.getElementById('maincontainer');
+        // Add a click event listener to the link
+        layoutLink.addEventListener('click', function() {
+            // Change the class of the element
+            if (layoutNow == "H") {
+                layoutContainer.setAttribute('class', `containerV`);
+                layoutNow = "V"
+                layoutLink.innerHTML = "Horizontal Layout &rArr;"
+            } else {
+                layoutContainer.setAttribute('class', `containerH`);
+                layoutNow = "H"
+                layoutLink.innerHTML = "Vertical Layout &uArr;"
+            }
+        });
+    </script>
 </body>
 </html>
