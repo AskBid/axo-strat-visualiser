@@ -1,41 +1,79 @@
-
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap" rel="stylesheet"><meta charset="utf-8">
-        <title>Axo Strat Visualiser</title>
-        <link rel="stylesheet" href="../renderStrat_page/styles.css">
-        <!-- <link rel="stylesheet" href="styles-inputs.css">  -->
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body>
-        <div id="head"></div>
-        <div id="timeHeader">Snapshot of the strategy past orders, current VOB and Market orders at:</div>
-        <div id="time"></div>
-        <div id="currentprice"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axo Strat Visualiser</title>
+    <link rel="stylesheet" href="../renderStrat_page/styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            height: 100vh; /* Full viewport height */
+        }
+        .left-div {
+            flex: 1; /* 1/3 width */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9f9f9;
+        }
+        .right-div {
+            flex: 2; /* 2/3 width */
+            overflow: auto; /* Enable scrolling */
+            background-color: #e0e0e0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-div">
+            <!-- Content for the left div -->
+            <div>This div remains centered.</div>
+        </div>
+        <div class="right-div">
+            <!-- Table for the right div -->
+            <!-- <table> -->
+            <table class="my-table" id="maintable">
+                <thead>
+                    <tr>
+                        <!-- <th></th> -->
+                        <th>&nbsp;buyLOs&nbsp;&nbsp;</th>
+                        <th>&nbsp;Bought&nbsp;</th>
+                        <th>&nbsp;SellMOs&nbsp;</th>
+                        <th>&nbsp;Price&nbsp;&nbsp;</th>
+                        <th>&nbsp;&nbsp;BuyMOs&nbsp;</th>
+                        <th>&nbsp;&nbsp;Sold&nbsp;&nbsp;</th>
+                        <th>&nbsp;sellLOs&nbsp;</th>
+                        <th></th>
+                        <!-- Add more headers as needed -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows of data -->
+                    <!-- Add more rows dynamically -->
+                </tbody>
+            </table>
 
-        <div class="sticky-div"><div class="inside-sticky">CIAO MIAO</div></div>
-
-        <table class="my-table" id="maintable">
-            <tr>
-                <th></th>
-                <th>&nbsp;buy-LO&nbsp;&nbsp;</th>
-                <th>&nbsp;Bought&nbsp;</th>
-                <th>&nbsp;Sells&nbsp;&nbsp;</th>
-                <th>&nbsp;Price&nbsp;&nbsp;</th>
-                <th>&nbsp;&nbsp;Buys&nbsp;&nbsp;</th>
-                <th>&nbsp;&nbsp;Sold&nbsp;&nbsp;</th>
-                <th>&nbsp;sell-LO&nbsp;</th>
-                <th></th>
-            </tr>
-        </table>
-        
-        <script src="marketTrades.js"></script>
-        <script src="orderBook.js"></script>
-        <script src="stratCurrentOVB.js"></script>
-        <script src="stratTrades.js"></script>
-        <script src="render.js"></script>
-        <script src="helpers.js"></script>
-    </body>
+            <script src="marketTrades.js"></script>
+            <script src="orderBook.js"></script>
+            <script src="stratCurrentOVB.js"></script>
+            <script src="stratTrades.js"></script>
+            <script src="render.js"></script>
+            <script src="helpers.js"></script>
+        </div>
+    </div>
+</body>
 </html>

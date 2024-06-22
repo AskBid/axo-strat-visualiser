@@ -37,8 +37,12 @@ th {
     /* word-wrap: break-word; Optional: Allow long words to wrap */
 }
 
-.absorbing-column {
+.absorbing-columnR {
     width: 40%; /* Absorb remaining space */
+}
+
+.absorbing-columnL {
+    width: 0%; /* Absorb remaining space */
 }
 
 .rowTR {

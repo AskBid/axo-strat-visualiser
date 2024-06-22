@@ -258,10 +258,10 @@ async function renderRow(objPriceLevel, precision, multiplier) {
     // Create a new <tr> element
     const price = objPriceLevel.price //round(max - (TICK * (ind    ex+1)), TICK)
     
-    const absorberL = document.createElement('td');
+    // const absorberL = document.createElement('td');
     const absorberR = document.createElement('td');
-    absorberL.setAttribute('class', `absorbing-column cell`);
-    absorberR.setAttribute('class', `absorbing-column cell`);
+    // absorberL.setAttribute('class', `absorbing-columnL cell`);
+    absorberR.setAttribute('class', `absorbing-columnR cell`);
     
     const sellTD = document.createElement('td');
     sellTD.setAttribute('id', `${price}-sell`)
@@ -315,7 +315,7 @@ async function renderRow(objPriceLevel, precision, multiplier) {
     }
     
     // Append the new <tr> to an existing parent element (e.g., <body>)
-    rowTR.appendChild(absorberL);
+    // rowTR.appendChild(absorberL);
     rowTR.appendChild(bidOVBTD);
     rowTR.appendChild(bidTD);
     rowTR.appendChild(sellTD);

@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap" rel="stylesheet"><meta charset="utf-8">
+        <title>Axo Strat Visualiser</title>
+        <link rel="stylesheet" href="../renderStrat_page/styles.css">
+        <!-- <link rel="stylesheet" href="styles-inputs.css">  -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <div id="head"></div>
+        <div id="timeHeader">Snapshot of the strategy past orders, current VOB and Market orders at:</div>
+        <div id="time"></div>
+        <div id="currentprice"></div>
+
+        <div class="sticky-div"><div class="inside-sticky">CIAO MIAO</div></div>
+
+        <table class="my-table" id="maintable">
+            <tr>
+                <th></th>
+                <th>&nbsp;buy-LO&nbsp;&nbsp;</th>
+                <th>&nbsp;Bought&nbsp;</th>
+                <th>&nbsp;Sells&nbsp;&nbsp;</th>
+                <th>&nbsp;Price&nbsp;&nbsp;</th>
+                <th>&nbsp;&nbsp;Buys&nbsp;&nbsp;</th>
+                <th>&nbsp;&nbsp;Sold&nbsp;&nbsp;</th>
+                <th>&nbsp;sell-LO&nbsp;</th>
+                <th></th>
+            </tr>
+        </table>
+        
+        <script src="marketTrades.js"></script>
+        <script src="orderBook.js"></script>
+        <script src="stratCurrentOVB.js"></script>
+        <script src="stratTrades.js"></script>
+        <script src="render.js"></script>
+        <script src="helpers.js"></script>
+    </body>
+</html>
