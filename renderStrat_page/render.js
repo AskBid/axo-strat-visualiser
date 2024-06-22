@@ -31,10 +31,10 @@ for (let index = 0; index < ((max - min) / TICK); index++) { // creates HTML Ske
         // Create a new <div> element
         const price = round(max - (TICK * (index+1)), TICK)
         
-        const absorberL = document.createElement('td');
+        // const absorberL = document.createElement('td');
         const absorberR = document.createElement('td');
-        absorberL.setAttribute('class', `absorbing-column cell`);
-        absorberR.setAttribute('class', `absorbing-column cell`);
+        // absorberL.setAttribute('class', `absorbing-column cell`);
+        absorberR.setAttribute('class', `absorbing-columnR cell`);
         
         const sellTD = document.createElement('td');
         sellTD.setAttribute('id', `${price}-sell`)
@@ -71,7 +71,7 @@ for (let index = 0; index < ((max - min) / TICK); index++) { // creates HTML Ske
         const rowTR = document.createElement('tr');
         rowTR.setAttribute('class', 'rowTR');
         rowTR.setAttribute('id', `${price}-row`)
-        rowTR.appendChild(absorberL);
+        // rowTR.appendChild(absorberL);
         rowTR.appendChild(bidOVBTD);
         rowTR.appendChild(bidTD);
         rowTR.appendChild(sellTD);
@@ -224,7 +224,7 @@ const soldcell = document.getElementById('Sold');
 soldcell.innerHTML =   `You now have: ${currentADA.toFixed(2)} ADA and ${currentCNT.toFixed(2)} ${nameCNT}`;
 
 const profitcell = document.getElementById('profitloss');
-profitcell.innerHTML = `At the current prices:<br>if you had hold your asset you'd have:<br>${(initialADA + (initialCNT * spotPrice)).toFixed(2)} ADA<br><br>instead your strat now holds a value of:<br>${(currentADA + (currentCNT * spotPrice)).toFixed(2)} ADA<br><br>profit: ${((currentADA + (currentCNT * spotPrice))-(initialADA + (initialCNT * spotPrice))).toFixed(2)} ADA`;
+profitcell.innerHTML = `At the current prices:<br><br>if you had hold your asset you'd have:<br>${(initialADA + (initialCNT * spotPrice)).toFixed(2)} ADA<br><br>instead your strat now holds a value of:<br>${(currentADA + (currentCNT * spotPrice)).toFixed(2)} ADA<br><br>profit: ${((currentADA + (currentCNT * spotPrice))-(initialADA + (initialCNT * spotPrice))).toFixed(2)} ADA`;
 
 function buildAskBid() {
     var highlights = {bid: null, ask: null}
