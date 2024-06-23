@@ -113,8 +113,8 @@ class SelectDates {
         this.stratCurrentOVB = this.getArrayOfObjsBeforeThisDate(this.stratCurrentOVBobjbyDateKeys, this.timestamp);
         this.stratTrades = this.getArrayOfObjsBeforeThisDate(this.stratTradesObjByDateKeys, this.timestamp);
         this.spotSpreadData = this.findSpotSpreadData(this.spotSpreadDataObjByDateKeys)
-        this.end = this.findend(this.stratCurrentOVBobjbyDateKeys);
-        this.start = this.findstart(this.stratCurrentOVBobjbyDateKeys);
+        // this.end = this.findend(this.spotSpreadDataObjByDateKeys);
+        // this.start = this.findstart(this.spotSpreadDataObjByDateKeys);
     }
     
     getArrayOfObjsBeforeThisDate(objTimeKeys, currentTime) {
@@ -156,11 +156,11 @@ class SelectDates {
         return spotSpreadDataObjByDateKeys[`${orderBookDataCompare.timestamp}`]
     }
 
-    findstart(objWithTimeKeys) {
+    static findstart(objWithTimeKeys) {
         return Math.min(...Object.keys(objWithTimeKeys).map(key => parseInt(key)))
     }
 
-    findend(objWithTimeKeys) {
+    static findend(objWithTimeKeys) {
         return Math.max(...Object.keys(objWithTimeKeys).map(key => parseInt(key)))
     }
 } 
@@ -181,15 +181,19 @@ async function render(timestamp) {
         spotSpreadData
     ) 
 
-    console.log(`start date: ${selectDates.start}`)
-    console.log(`end date:   ${selectDates.end}`)
+    console.log(`current timestap: ${timestamp}`)
+    var date = new Date(timestamp*1000);
+    date = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+    const currentDate = document.getElementById('currentTimeLabel');
+    currentDate.innerHTML = `${date}`
+    console.log(`current date:     ${date}`)
 
     const minmax = selectDates.minmaxPrices()
     const ticksPAD = 10;
-    const TICK = 0.00001;
+    const TICK = 0.01;
     const MIN = roundnum(minmax.min - (ticksPAD * TICK), TICK);
     const MAX = roundnum(minmax.max + (ticksPAD * TICK), TICK);
-    const MULTIPLIER = 1000;
+    const MULTIPLIER = 1;
 
     const frameObj = new FrameOBJ(
         TICK, MIN, MAX, 
@@ -217,17 +221,29 @@ async function render(timestamp) {
     renderAskBid(frameObj.Highlights.ask, frameObj.TICK)
     renderAskBid(frameObj.Highlights.bid, frameObj.TICK)
 
-    console.log(`frame with timestamp ${timestamp} was rendered.`)
-    console.log(`date now: ${Date.now()}`)
-    
+    console.log(`frame with timestamp ${timestamp} was rendered.`)  
     
     
     return Promise.resolve(frameObj);
 }
 
 async function main() {
-    for (let index = 0; index < 35000; index++) {
-        await render(1717968200 + (6*index))
+    const start = SelectDates.findstart(spotSpreadData)
+    console.log(`start timestamp: ${start}`)
+    const end   = SelectDates.findend(spotSpreadData)
+    console.log(`end timestamp:   ${end}`)
+
+    var date = new Date(start*1000);
+    const startDate = document.getElementById('startTimeLabel');
+    startDate.innerHTML = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+
+    date = new Date(end*1000);
+    const endDate = document.getElementById('endTimeLabel');
+    endDate.innerHTML = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+
+    for (let index = 0; index < ((end-start)/500); index++) {
+        await render(start + (500*index))
+        // problem! the OVB limit orders get accumulated over time.
         await sleep(100)
     }
 }
