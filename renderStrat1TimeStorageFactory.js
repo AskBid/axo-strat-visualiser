@@ -76,9 +76,8 @@ fs.readFile("./renderStrat_database/orderBook.json", "utf8", (err, jsonString) =
     return;
   }
     
-    const content_json = JSON.parse(jsonString).result.spotSpreadData.spot;
-    const content_json2 = JSON.parse(jsonString).result.spotSpreadData.pct_spread;
-    const content = `const spotPrice = ${JSON.stringify(content_json, null, 2)}\nconst pct_spread = ${JSON.stringify(content_json2, null, 2)}`
+    const content_json = JSON.parse(jsonString).result.spotSpreadData;
+    const content = `const spotSpreadData = ${JSON.stringify(content_json, null, 2)}`
     
     fs.writeFile('./renderStrat_page/data4.js', content, err => {
         if (err) {

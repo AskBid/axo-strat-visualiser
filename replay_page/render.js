@@ -38,9 +38,7 @@ async function render(timestamp) {
     
     frameObj.populate()
     var sortedPricesKeys = Object.keys(frameObj.frame).sort().reverse()
-    // sortedPricesKeys.forEach(priceLevel => {
-    //     renderRow(frameObj.frame[priceLevel], 0.1, MULTIPLIER)
-    // })
+
     const promises = [];
 
     for (const priceLevel of sortedPricesKeys) { 

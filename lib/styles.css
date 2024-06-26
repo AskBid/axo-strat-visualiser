@@ -1,0 +1,208 @@
+body {
+	/*background-color: #9bd;*/
+	background-color: #515151;
+	font-family: 'Roboto', sans-serif;
+	font-size: 18px;
+	margin: 0;
+	padding: 0;
+	height: 100vh;
+	width: 100%;
+	/* display: flex; */
+	/* flex-direction: column; */
+	/* justify-content: flex-start; */
+	/* align-content: center; */
+	/* align-items: stretch; */
+}
+
+.my-table {
+    width: 100%;
+    table-layout: auto; /* Set fixed table layout */
+    border-collapse: collapse; /* Optional: Remove cell spacing */
+}
+
+th {
+	font-family: 'Roboto Mono';
+	color:#5b5b5b;
+	white-space: nowrap;
+	overflow: hidden;
+	font-size: 15px;
+}
+
+.my-table td {
+    /* width: calc(100% / 3); Divide equally for 3 columns */
+    text-align: center; /* Optional: Center-align cell content */
+    border: 1px solid rgb(175, 175, 175); /* Optional: Add borders for visual clarity */
+    vertical-align: middle; /* Optional: Vertically center cell content */
+	padding: 4px 8px 4px 8px;
+	/* min-width: 30px; */
+    /* word-wrap: break-word; Optional: Allow long words to wrap */
+}
+
+.absorbing-columnR {
+    width: 40%; /* Absorb remaining space */
+}
+
+.absorbing-columnL {
+    width: 0%; /* Absorb remaining space */
+}
+
+.rowTR {
+	/* display:table-row;
+    width:auto;
+	justify-content: center; */
+	padding: 3px	
+}
+
+.rowHighlight {
+	border: 1px solid #fff !important;
+	background-color: #ffffff;
+}
+
+.cell {
+	/* float:right;
+		display:table-column; */
+	background-color: rgba(161, 161, 161, 0.96);
+	border: 0.5px solid #1e1e1e;
+	/* width: 3px; */
+}
+
+.priceTD {	
+	background-color: rgba(58, 58, 58, 0.9);
+	color: #d2d2d2;
+}
+
+.sellTD {
+	color:rgba(147, 52, 46, 1);
+}
+
+.buyTD {
+	color:rgba(19, 94, 147, 1);
+}
+
+.bidTD {
+	background-color: rgba(36, 43, 119, 0.9);
+	color: #eee;
+}
+
+.askTD {
+	background-color: rgba(147, 52, 46, 0.9);
+	color: #eee;	
+}
+
+.lastBuyTD {
+	background-color: #6dfafa;	
+	color: #1436e1;
+}
+
+.lastSellTD {
+	background-color: #f4cccc;	
+	color: #ff0000;
+}
+
+.activeaskOVB {
+	background-color: #d83434;	
+	color: #ffffff;
+font-weight: bold;
+}
+
+.activebidOVB {
+	background-color: #3470d8;	
+	color: #ffffff;
+	font-weight: bold;
+}
+
+.spotTD {
+	border: 2px solid #da14e1 !important
+}
+
+.bidask {
+	color: #fff942;
+	font-weight: bolder;
+}
+
+#head {
+	background-color: #dfdddd;
+	box-sizing: border-box;
+	padding-left: 10px;
+	padding-bottom: 20px;
+	padding-top: 20px;
+	width: 100%;
+	font-size: 15px;
+}
+
+#timeHeader {
+	background-color: #dfdddd;
+	box-sizing: border-box;
+	margin: 0px;
+	padding-left: 10px;
+	width: 100%;
+	font-size: 15px;
+}
+
+#time {
+	background-color: #dfdddd;
+	color:#3470d8;
+	box-sizing: border-box;
+	padding-left: 10px;
+	padding-bottom: 20px;
+	margin: 0px;	
+	border: 0px;
+	width: 100%;
+}
+
+
+#currentprice {
+	background-color: #eee;
+	width: 100%;
+	text-align: center;
+	padding: 10px 0px 10px 0px;
+}
+
+#Bought {
+	background-color: #eee;
+	width: 100%;
+	color:#1436e1;
+	text-align: center;
+	padding: 10px 0px 10px 0px;
+}
+
+#Sold {
+	background-color: #eee;
+	width: 100%;
+	color:#b65343;
+	text-align: center;
+	padding: 10px 0px 10px 0px;
+}
+
+#profitloss {
+	background-color: #eee;
+	font-weight: bold;
+	width: 100%;
+	color:#b643b4;
+	text-align: center;
+	padding: 10px 0px 10px 0px;
+}
+
+.sticky-div {
+    position: sticky;
+    left: 0; /* Position on the left side */
+    top: 0; /* Adjust as needed */
+    width: 100%; /* Set the desired width */
+    margin: auto; /* Center horizontally */
+	background-color: #d2d2d2;
+}
+
+#changeLayoutDiv {
+	font-size: 15px;
+	box-sizing: border-box;
+	padding-right: 40px;
+	align-content: right;	
+	text-align: right;
+	width: 100%;
+}
+
+#currentTimeLabel {
+	color:#da14e1;
+	font-weight: bolder;
+}
+/* <HEADER */
