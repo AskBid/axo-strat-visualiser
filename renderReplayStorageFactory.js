@@ -80,8 +80,8 @@ fs.readFile(`${location_to_read_from}/orderBook_ReplayDatabase.json`, "utf8", (e
             console.error(err);
         } else {
             console.log("orderBook written successfully")
+            console.log("you can now launch `chrome ./replay_page/index.html`")
         }
     });
 });
 
-console.log("you can now launch `chrome ./replay_page/index.html`")
