@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap" rel="stylesheet"><meta charset="utf-8">
     <title>Axo Strat Visualiser</title>
-    <link rel="stylesheet" href="../renderStrat_page/styles.css">
+    <link rel="stylesheet" href="../lib/styles.css">
     <style>
         body {
             margin: 0;
@@ -87,7 +87,11 @@
             <script src="data3.js"></script>
             <script src="data4.js"></script>
             <script src="data5.js"></script>
+            <script src="../lib/render_logic.js"></script>
+            <script src="../lib/logic.js"></script>
+            <script src="../lib/helpers.js"></script>
             <script src="render.js"></script>
+
         </div>
     </div>
 
@@ -102,7 +106,7 @@
             if (layoutNow == "H") {
                 layoutContainer.setAttribute('class', `containerV`);
                 layoutNow = "V"
-                layoutLink.innerHTML = "Horizontal Layout &rArr;"
+                layoutLink.innerHTML = "Horizontal Layout &lArr;"
             } else {
                 layoutContainer.setAttribute('class', `containerH`);
                 layoutNow = "H"

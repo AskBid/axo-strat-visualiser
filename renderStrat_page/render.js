@@ -4,7 +4,7 @@ const precisionForAssetValues = 0.1
 const multiplier = 1
 
 
-var minmaxs = [find_min_max(stratTrades), find_min_max(marketTrades), find_min_max(stratCurrentOVB)]
+var minmaxs = [find_min_max(stratTrades, "price", TICK), find_min_max(marketTrades, "price", TICK), find_min_max(stratCurrentOVB, "price", TICK)]
 console.log("minmaxs::::::::::::::::::::::::::")
 var filteredMinMaxs = minmaxs.filter(e => e != false)
 const min = Math.min(...(filteredMinMaxs.map(item => item.min))) - (TICK * PAD)
@@ -158,19 +158,7 @@ function render_1div(trade) {
     document.body.appendChild(newDiv);
 }
 
-function find_min_max(stratTrades) {
-    // Extract the 'price' values into an array
-    const prices = stratTrades.map(item => item.price);
 
-    // Find the maximum and minimum prices
-    if (prices.length == 0) {
-        return false
-    }
-    const maxPrice = Math.max(...prices);
-    const minPrice = Math.min(...prices);
-
-    return {"max": round(maxPrice, TICK), "min": round(minPrice, TICK)}
-}
 
 function find_last(marketTrades) {
     var lastObj = {"timestamp": 0}
@@ -195,36 +183,38 @@ function valueit(value) {
     return value * multiplier
 }
 
-let buys = stratTrades.filter(e => e.orderSide == 'BUY')
-let sells = stratTrades.filter(e => e.orderSide == 'SELL')
+function calculateProfits(stratUserFunds, stratTrades) {
+    let buys = stratTrades.filter(e => e.orderSide == 'BUY')
+    let sells = stratTrades.filter(e => e.orderSide == 'SELL')
 
-let objADA = stratUserFunds.filter(obj => obj.asset_name === "ADA"); 
-let objCNT = stratUserFunds.filter(obj => obj.asset_name !== "ADA"); 
+    let objADA = stratUserFunds.filter(obj => obj.asset_name === "ADA"); 
+    let objCNT = stratUserFunds.filter(obj => obj.asset_name !== "ADA"); 
 
-let currentADA = objADA.length > 0 ? objADA[0].allocation : 0;
-let currentCNT = objCNT.length > 0 ? objCNT[0].allocation : 0;
-let initialADA = currentADA;
-let initialCNT = currentCNT;
-let nameCNT    = objCNT.length > 0 ? objCNT[0].asset_name : "CNT";
+    let currentADA = objADA.length > 0 ? objADA[0].allocation : 0;
+    let currentCNT = objCNT.length > 0 ? objCNT[0].allocation : 0;
+    let initialADA = currentADA;
+    let initialCNT = currentCNT;
+    let nameCNT    = objCNT.length > 0 ? objCNT[0].asset_name : "CNT";
 
-buys.forEach(buy => {
-    initialADA = initialADA + (buy.amount * buy.price)
-    initialCNT = initialCNT - buy.amount
-});
+    buys.forEach(buy => {
+        initialADA = initialADA + (buy.amount * buy.price)
+        initialCNT = initialCNT - buy.amount
+    });
 
-sells.forEach(sell => {
-    initialADA = initialADA - (sell.amount * sell.price)
-    initialCNT = initialCNT + sell.amount
-})
+    sells.forEach(sell => {
+        initialADA = initialADA - (sell.amount * sell.price)
+        initialCNT = initialCNT + sell.amount
+    })
 
-const boughtCell = document.getElementById('Bought');
-boughtCell.innerHTML = `You entered: ${initialADA.toFixed(2)} ADA and ${initialCNT.toFixed(2)} ${nameCNT}`;
+    const boughtCell = document.getElementById('Bought');
+    boughtCell.innerHTML = `You entered: ${initialADA.toFixed(2)} ADA and ${initialCNT.toFixed(2)} ${nameCNT}`;
 
-const soldcell = document.getElementById('Sold');
-soldcell.innerHTML =   `You now have: ${currentADA.toFixed(2)} ADA and ${currentCNT.toFixed(2)} ${nameCNT}`;
+    const soldcell = document.getElementById('Sold');
+    soldcell.innerHTML =   `You now have: ${currentADA.toFixed(2)} ADA and ${currentCNT.toFixed(2)} ${nameCNT}`;
 
-const profitcell = document.getElementById('profitloss');
-profitcell.innerHTML = `At the current prices:<br><br>if you had hold your asset you'd have:<br>${(initialADA + (initialCNT * spotPrice)).toFixed(2)} ADA<br><br>instead your strat now holds a value of:<br>${(currentADA + (currentCNT * spotPrice)).toFixed(2)} ADA<br><br>profit: ${((currentADA + (currentCNT * spotPrice))-(initialADA + (initialCNT * spotPrice))).toFixed(2)} ADA`;
+    const profitcell = document.getElementById('profitloss');
+    profitcell.innerHTML = `At the current prices:<br><br>if you had hold your asset you'd have:<br>${(initialADA + (initialCNT * spotPrice)).toFixed(2)} ADA<br><br>instead your strat now holds a value of:<br>${(currentADA + (currentCNT * spotPrice)).toFixed(2)} ADA<br><br>profit: ${((currentADA + (currentCNT * spotPrice))-(initialADA + (initialCNT * spotPrice))).toFixed(2)} ADA`;
+}
 
 function buildAskBid() {
     var highlights = {bid: null, ask: null}
@@ -243,3 +233,5 @@ const askbid = buildAskBid()
 
 renderAskBid(askbid.ask)
 renderAskBid(askbid.bid)
+
+calculateProfits(stratUserFunds, stratTrades)
