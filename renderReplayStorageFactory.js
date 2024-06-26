@@ -83,3 +83,5 @@ fs.readFile(`${location_to_read_from}/orderBook_ReplayDatabase.json`, "utf8", (e
         }
     });
 });
+
+console.log("you can now launch `chrome ./replay_page/index.html`")
