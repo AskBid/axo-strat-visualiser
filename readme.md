@@ -83,9 +83,9 @@ $ ./renderStrat.sh 3c5c3afcce7bd1a330f43e7b45385d5511afc5f5c8b76e47c5e6e3a5 SNEK
 In this case the TICK wil default to 0.01 which for SNEK will be far too big, and all the trades will be probably condensed in one price level (TICK).
 
 
-### brief use of replay functions:
+# brief use of replay functions:
 
-# Intro
+### Intro
 
 This Replay Mode it is simply a set of scripts to fetch data at certain interval (using Linux crontab to launch the script every x time), after which the data fetched can be reorganised from a script that prepares the data to be rendered by a local webpage that replays all of the data recorded at a higher speed.
 
@@ -93,7 +93,7 @@ In the future will be possible to set the speed, but for now it is set as such t
 
 You can still modify such parameters within the code of the file `replay_page/render.js`.
 
-# How To
+### How To
 
 run `./initiateReplayStorage.sh` to clean up the folder and prepare empty files. (will delete all existing, move somewhere else if required)
 
