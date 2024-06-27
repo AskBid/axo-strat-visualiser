@@ -1,5 +1,3 @@
-> Note: project has been changing and not all of the below may be relevant, but it can help understanding current workings until I write up to date readme.
-
 # Prerequisits
 
 Need to have `curl` and `nodejs` installed. Is possible to run them on Windows but not sure what's the best route.
@@ -120,6 +118,7 @@ node renderReplayStorageFactory.js - 0.00001 1000
 node renderReplayStorageFactory.js ./replay_archive/cnt00 - 10
 node renderReplayStorageFactory.js ./replay_archive/cnt03
 node renderReplayStorageFactory.js ./replay_archive/cnt03 0.1
+node renderReplayStorageFactory.js ,/replay_archive/snek_00 0.00001 1000
 ```
 
 When `renderReplayStorageFactory.js` run successfully you can launch the web page `/replay_page/index.html` from you browser.
