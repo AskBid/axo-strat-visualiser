@@ -9,6 +9,16 @@ async function render() {
     const max = Math.max(...(filteredMinMaxs.map(item => item.max))) + (TICK * (ticksPAD+1))
     console.log(`min: ${min}, max: ${max}`)
 
+    // headers render function
+    const headtitle = document.getElementById('head');
+    headtitle.textContent = `This is a visualisation of the strategy ID: `;
+    var link = `https://app.axo.trade/strategies/view/${stratID}`;
+    var stratLink = document.createElement("a");
+    stratLink.setAttribute("href", link);
+    stratLink.innerHTML = `${stratID}`;
+    headtitle.appendChild(stratLink);
+    /// headers.
+
     const MIN = roundnum(min - (ticksPAD * TICK), TICK);
     const MAX = roundnum(max + (ticksPAD * TICK), TICK);
 
