@@ -54,8 +54,8 @@ th {
 }
 
 .rowHighlight {
-	border: 1px solid #fff !important;
-	background-color: #ffffff;
+	border: 1px solid #fffc69 !important;
+	background-color: #5398dc;
 }
 
 .cell {
@@ -137,6 +137,7 @@ font-weight: bold;
 	padding-top: 5px;
 	width: 100%;
 	font-size: 15px;
+	font-weight: bold;
 }
 
 #timeHeader {
