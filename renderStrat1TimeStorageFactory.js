@@ -4,12 +4,14 @@ const helpers = require("./helpers.js");
 console.log("")
 console.log("start renderStrat1TimeStorageFactory.js ...")
 
-console.log(`arg1: ${process.argv[2]}`)
-console.log(`arg2: ${process.argv[3]}`) // not used so far
+console.log(`STRAT arg: ${process.argv[2]}`)
+console.log(`ASSET arg: ${process.argv[3]}`)
 console.log(`TICK size: ${process.argv[4]}`)
+console.log(`SCALE_FACTOR: ${process.argv[5]}`)
 
 const stratID = `${process.argv[2]}`
 const TICK = `${process.argv[4]}`
+const SCALE_FACTOR = `${process.argv[5]}`
 
 // strategy trades 
 fs.readFile("./renderStrat_database/stratTrades.json", "utf8", (err, jsonString) => {
@@ -19,7 +21,10 @@ fs.readFile("./renderStrat_database/stratTrades.json", "utf8", (err, jsonString)
   }
     
     const content_json = JSON.parse(jsonString).result.map(helpers.translateTrade);
-    const content = `const stratTrades = ${JSON.stringify(content_json, null, 2)}\nconst stratID = "${stratID}"\nconst TICK = ${TICK}`
+    const content = `const stratTrades = ${JSON.stringify(content_json, null, 2)}\n
+                     const stratID = "${stratID}"\n
+                     const TICK = ${TICK}
+                     const SCALE_FACTOR= ${SCALE_FACTOR}`
     
     fs.writeFile('./renderStrat_page/data.js', content, err => {
         if (err) {
