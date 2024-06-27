@@ -59,7 +59,6 @@ async function render() {
     priceRowLink.setAttribute("href", link);
     priceRowLink.innerHTML = `Go to current price ${currentpriceformatted}`;
     currentpriceDiv.appendChild(priceRowLink);
-    window.onload = document.getElementById(`#${currentpriceformatted}-row`).scrollIntoView();
     /// headers.
 
     return Promise.resolve(frameObj);

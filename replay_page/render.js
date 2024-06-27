@@ -31,7 +31,8 @@ async function render(timestamp) {
         selectDates.marketTrades, 
         selectDates.stratCurrentOVB, 
         selectDates.stratTrades, 
-        selectDates.spotSpreadData
+        selectDates.spotSpreadData,
+        true // blocks accumulation for current OBV with same price
     )
     
     frameObj.populate()
@@ -61,7 +62,7 @@ async function render(timestamp) {
     const scaleFactorDiv = document.getElementById('scaleFactor');
     scaleFactorDiv.textContent = `The asset's values SCALE FACTOR is: ${SCALE_FACTOR} `;
     ///
-    console.log(`frame with timestamp ${timestamp} was rendered.`)  
+    // console.log(`frame with timestamp ${timestamp} was rendered.`)  
     
     
     return Promise.resolve(frameObj);
