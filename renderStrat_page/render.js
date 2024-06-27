@@ -11,7 +11,6 @@ async function render() {
 
     const MIN = roundnum(min - (ticksPAD * TICK), TICK);
     const MAX = roundnum(max + (ticksPAD * TICK), TICK);
-    const MULTIPLIER = 1;
 
     const frameObj = new FrameOBJ(
         TICK, MIN, MAX, 
@@ -27,7 +26,7 @@ async function render() {
     const promises = [];
 
     for (const priceLevel of sortedPricesKeys) { 
-        promises.push(await renderRow(frameObj.frame[priceLevel], 0.1, MULTIPLIER))
+        promises.push(await renderRow(frameObj.frame[priceLevel], 0.1, SCALE_FACTOR))
     }
 
     await Promise.all(promises)
