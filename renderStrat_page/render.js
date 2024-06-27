@@ -45,6 +45,9 @@ async function render() {
     stratLink.innerHTML = `${stratID}`;
     headtitle.appendChild(stratLink);
 
+    const scaleFactorDiv = document.getElementById('scaleFactor');
+    scaleFactorDiv.textContent = `The asset's values SCALE FACTOR is: ${SCALE_FACTOR} `;
+
     const dateLast = new Date(parseFloat(frameObj.lastTrade.timestamp) * 1000)
     const timeDiv = document.getElementById('time');
     timeDiv.textContent = `${dateLast}`;

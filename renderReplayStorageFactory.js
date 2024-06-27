@@ -17,7 +17,7 @@ fs.readFile(`${location_to_read_from}/stratTrades_ReplayDatabase.json`, "utf8", 
     const stratTrades = JSON.parse(jsonString);
     const content = `const stratTrades = ${JSON.stringify(stratTrades, null, 2)}`
 
-    fs.writeFile('./replay_page/stratTrades.js', content, err => {
+    fs.writeFile('./replay_page/session_temp_data/stratTrades.js', content, err => {
         if (err) {
             console.error(err);
         } else {
@@ -36,7 +36,7 @@ fs.readFile(`${location_to_read_from}/stratCurrentOVB_ReplayDatabase.json`, "utf
     const stratCurrentOVB = JSON.parse(jsonString);
     const content = `const stratCurrentOVB = ${JSON.stringify(stratCurrentOVB, null, 2)}`
 
-    fs.writeFile('./replay_page/stratCurrentOVB.js', content, err => {
+    fs.writeFile('./replay_page/session_temp_data/stratCurrentOVB.js', content, err => {
         if (err) {
             console.error(err);
         } else {
@@ -56,7 +56,7 @@ fs.readFile(`${location_to_read_from}/marketTrades_ReplayDatabase.json`, "utf8",
     const marketTrades = JSON.parse(jsonString);
     const content = `const marketTrades = ${JSON.stringify(marketTrades, null, 2)}`;
 
-    fs.writeFile('./replay_page/marketTrades.js', content, err => {
+    fs.writeFile('./replay_page/session_temp_data/marketTrades.js', content, err => {
         if (err) {
             console.error(err);
         } else {
@@ -75,7 +75,7 @@ fs.readFile(`${location_to_read_from}/orderBook_ReplayDatabase.json`, "utf8", (e
     const spotSpreadData = JSON.parse(jsonString);
     const content = `const spotSpreadData = ${JSON.stringify(spotSpreadData, null, 2)}`
 
-    fs.writeFile('./replay_page/orderBook.js', content, err => {
+    fs.writeFile('./replay_page/session_temp_data/orderBook.js', content, err => {
         if (err) {
             console.error(err);
         } else {
