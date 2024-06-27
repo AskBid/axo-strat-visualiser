@@ -1,8 +1,6 @@
 /renderStrat_page/data*
-/replay_page/marketTrades.js
-/replay_page/orderBook.js
-/replay_page/stratCurrentOVB.js
-/replay_page/stratTrades.js
+/renderStrat_page/session_temp_data/*.js
+/replay_page/session_temp_data/*.js
 replay_archive/
 *.json
 *.log

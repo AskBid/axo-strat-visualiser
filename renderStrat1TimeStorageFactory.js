@@ -13,6 +13,17 @@ const stratID = `${process.argv[2]}`
 const TICK = `${process.argv[4]}`
 const SCALE_FACTOR = `${process.argv[5]}`
 
+// parameters values
+const content = `const stratID = "${stratID}"\nconst TICK = ${TICK}\nconst SCALE_FACTOR= ${SCALE_FACTOR}`
+
+fs.writeFile('./renderStrat_page/session_temp_data/parameters.js', content, err => {
+    if (err) {
+        console.error(err);
+    } else {
+        console.log("parameters written successfully")
+    }
+});
+
 // strategy trades 
 fs.readFile("./renderStrat_database/stratTrades.json", "utf8", (err, jsonString) => {
   if (err) {
@@ -21,12 +32,9 @@ fs.readFile("./renderStrat_database/stratTrades.json", "utf8", (err, jsonString)
   }
     
     const content_json = JSON.parse(jsonString).result.map(helpers.translateTrade);
-    const content = `const stratTrades = ${JSON.stringify(content_json, null, 2)}\n
-                     const stratID = "${stratID}"\n
-                     const TICK = ${TICK}
-                     const SCALE_FACTOR= ${SCALE_FACTOR}`
+    const content = `const stratTrades= ${JSON.stringify(content_json, null, 2)}`
     
-    fs.writeFile('./renderStrat_page/data.js', content, err => {
+    fs.writeFile('./renderStrat_page/session_temp_data/stratTrades.js', content, err => {
         if (err) {
             console.error(err);
         } else {
@@ -45,7 +53,7 @@ fs.readFile("./renderStrat_database/stratCurrentOVB.json", "utf8", (err, jsonStr
     const content_json = JSON.parse(jsonString).result.map(helpers.translateOVB);
     const content = `const stratCurrentOVB = ${JSON.stringify(content_json, null, 2)}`
     
-    fs.writeFile('./renderStrat_page/data3.js', content, err => {
+    fs.writeFile('./renderStrat_page/session_temp_data/stratCurrentOVB.js', content, err => {
         if (err) {
             console.error(err);
         } else {
@@ -65,7 +73,7 @@ fs.readFile("./renderStrat_database/marketTrades.json", "utf8", (err, jsonString
     const content_json = JSON.parse(jsonString).result;
     const content = `const marketTrades = ${JSON.stringify(content_json, null, 2)}`
     
-    fs.writeFile('./renderStrat_page/data2.js', content, err => {
+    fs.writeFile('./renderStrat_page/session_temp_data/marketTrades.js', content, err => {
         if (err) {
             console.error(err);
         } else {
@@ -84,7 +92,7 @@ fs.readFile("./renderStrat_database/orderBook.json", "utf8", (err, jsonString) =
     const content_json = JSON.parse(jsonString).result.spotSpreadData;
     const content = `const spotSpreadData = ${JSON.stringify(content_json, null, 2)}`
     
-    fs.writeFile('./renderStrat_page/data4.js', content, err => {
+    fs.writeFile('./renderStrat_page/session_temp_data/orderBook.js', content, err => {
         if (err) {
             console.error(err);
         } else {
@@ -107,7 +115,7 @@ fs.readFile("./renderStrat_database/stratUserFunds.json", "utf8", (err, jsonStri
     });
     const content = `const stratUserFunds = ${JSON.stringify(content_json, null, 2)}`
     
-    fs.writeFile('./renderStrat_page/data5.js', content, err => {
+    fs.writeFile('./renderStrat_page/session_temp_data/stratUserFunds.js', content, err => {
         if (err) {
             console.error(err);
         } else {
