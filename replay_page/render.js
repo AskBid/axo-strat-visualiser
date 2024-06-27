@@ -23,10 +23,8 @@ async function render(timestamp) {
 
     const minmax = selectDates.minmaxPrices()
     const ticksPAD = 10;
-    const TICK = 0.01;
     const MIN = roundnum(minmax.min - (ticksPAD * TICK), TICK);
     const MAX = roundnum(minmax.max + (ticksPAD * TICK), TICK);
-    const MULTIPLIER = 1;
 
     const frameObj = new FrameOBJ(
         TICK, MIN, MAX, 
@@ -42,7 +40,7 @@ async function render(timestamp) {
     const promises = [];
 
     for (const priceLevel of sortedPricesKeys) { 
-        promises.push(await renderRow(frameObj.frame[priceLevel], 0.1, MULTIPLIER))
+        promises.push(await renderRow(frameObj.frame[priceLevel], 0.1, SCALE_FACTOR))
     }
 
     await Promise.all(promises)
@@ -51,7 +49,18 @@ async function render(timestamp) {
     renderSpotPrice(frameObj.Highlights.spot, frameObj.TICK)
     renderAskBid(frameObj.Highlights.ask, frameObj.TICK)
     renderAskBid(frameObj.Highlights.bid, frameObj.TICK)
+    /// render heeaders
+    const headtitle = document.getElementById('head');
+    headtitle.textContent = `This is a visualisation of the strategy ID: `;
+    var link = `https://app.axo.trade/strategies/view/${stratID}`;
+    var stratLink = document.createElement("a");
+    stratLink.setAttribute("href", link);
+    stratLink.innerHTML = `${stratID}`;
+    headtitle.appendChild(stratLink);
 
+    const scaleFactorDiv = document.getElementById('scaleFactor');
+    scaleFactorDiv.textContent = `The asset's values SCALE FACTOR is: ${SCALE_FACTOR} `;
+    ///
     console.log(`frame with timestamp ${timestamp} was rendered.`)  
     
     

@@ -1,12 +1,43 @@
 const fs = require("fs");
 
 var location_to_read_from = `${process.argv[2]}`
-if (location_to_read_from == "undefined") {
+if (location_to_read_from == "undefined" || location_to_read_from == "-") {
     location_to_read_from = "./replay_database"
 }
 console.log(`base location to read from: ${location_to_read_from}`)
 
+var TICK = `${process.argv[3]}`
+if (TICK == "undefined" || location_to_read_from == "-") {
+    TICK = "0.01"
+}
+console.log(`TICK set to: ${TICK}`)
+
+var SCALE_FACTOR = `${process.argv[4]}`
+if (SCALE_FACTOR == "undefined" || location_to_read_from == "-") {
+    SCALE_FACTOR = "1"
+}
+console.log(`SCALE_FACTOR set to: ${SCALE_FACTOR}`)
+
 const timestampNow = Date.now()
+
+// parameters
+fs.readFile(`${location_to_read_from}/ids.json`, "utf8", (err, jsonString) => {
+    if (err) {
+        console.log("File read failed:", err);
+        return;
+    }
+    
+    const content = `const stratID = ${JSON.stringify(JSON.parse(jsonString).stratID, null, 2)}\nconst TICK = ${TICK}\nconst SCALE_FACTOR = ${SCALE_FACTOR}`
+
+    fs.writeFile('./replay_page/session_temp_data/parameters.js', content, err => {
+        if (err) {
+            console.error(err);
+        } else {
+            console.log("parameters written successfully")
+        }
+    });
+});
+
 // strategy trades
 fs.readFile(`${location_to_read_from}/stratTrades_ReplayDatabase.json`, "utf8", (err, jsonString) => {
     if (err) {
