@@ -51,6 +51,15 @@ async function render() {
     const dateLast = new Date(parseFloat(frameObj.lastTrade.timestamp) * 1000)
     const timeDiv = document.getElementById('time');
     timeDiv.textContent = `${dateLast}`;
+
+    const currentpriceDiv = document.getElementById('currentprice');
+    var currentpriceformatted = roundtext(frameObj.lastTrade.price, TICK)
+    var link = `#${currentpriceformatted}-row`;
+    var priceRowLink = document.createElement("a");
+    priceRowLink.setAttribute("href", link);
+    priceRowLink.innerHTML = `Go to current price ${currentpriceformatted}`;
+    currentpriceDiv.appendChild(priceRowLink);
+    window.onload = document.getElementById(`#${currentpriceformatted}-row`).scrollIntoView();
     /// headers.
 
     return Promise.resolve(frameObj);
