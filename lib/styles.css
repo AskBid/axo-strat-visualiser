@@ -53,9 +53,14 @@ th {
 	padding: 3px	
 }
 
-.rowHighlight {
+.rowHighlightBid {
 	border: 1px solid #fffc69 !important;
 	background-color: #5398dc;
+}
+
+.rowHighlightAsk {
+	border: 1px solid #fffc69 !important;
+	background-color: #ce50d7;
 }
 
 .cell {

@@ -53,11 +53,11 @@ async function render() {
     timeDiv.textContent = `${dateLast}`;
 
     const currentpriceDiv = document.getElementById('currentprice');
-    var currentpriceformatted = roundtext(frameObj.lastTrade.price, TICK)
-    var link = `#${currentpriceformatted}-row`;
+    var currentpriceformatted = roundnum(frameObj.lastTrade.price, TICK)
+    var link = `#${currentpriceformatted+(10*TICK)}-row`;
     var priceRowLink = document.createElement("a");
     priceRowLink.setAttribute("href", link);
-    priceRowLink.innerHTML = `Go to current price ${currentpriceformatted}`;
+    priceRowLink.innerHTML = `Go to last traded price ${currentpriceformatted}`;
     currentpriceDiv.appendChild(priceRowLink);
     /// headers.
 
