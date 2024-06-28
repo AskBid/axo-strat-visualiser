@@ -1,6 +1,6 @@
 //const TICK = 0.01 // now given with command line argument, defaults to 0.01
 async function render() {
-    const ticksPAD = 10;
+    const ticksPAD = 5;
 
     var minmaxs = [find_min_max(stratTrades, "price", TICK), find_min_max(marketTrades, "price", TICK), find_min_max(stratCurrentOVB, "price", TICK)]
     console.log("minmaxs::::::::::::::::::::::::::")

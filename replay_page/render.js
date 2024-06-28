@@ -22,7 +22,7 @@ async function render(timestamp) {
     console.log(`current date:     ${date}`)
 
     const minmax = selectDates.minmaxPrices()
-    const ticksPAD = 10;
+    const ticksPAD = 5;
     const MIN = roundnum(minmax.min - (ticksPAD * TICK), TICK);
     const MAX = roundnum(minmax.max + (ticksPAD * TICK), TICK);
 
