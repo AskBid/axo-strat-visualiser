@@ -46,23 +46,25 @@ fs.readFile("./replay_database/stratCurrentOVB.json", "utf8", (err, jsonString) 
         return;
     }
     
-    const stratCurrentOVB = JSON.parse(jsonString).result.map(h.translateOVB);
+    const stratCurrentOVB = JSON.parse(jsonString).result;
 
     fs.readFile("./replay_database/stratCurrentOVB_ReplayDatabase.json", "utf8", (err, jsonString) => {
         if (err) {
             console.log("File read failed:", err);
             return;
-        } 
+        };
 
-        var existing = JSON.parse(jsonString)
-        const updated = Object.assign(existing, keyTheTimestamps(stratCurrentOVB))
+        var newObj = {};
+        newObj[timestampNow] = stratCurrentOVB;
+        var existing = JSON.parse(jsonString);
+        const updated = Object.assign(existing, newObj);
 
         fs.writeFile('./replay_database/stratCurrentOVB_ReplayDatabase.json', JSON.stringify(updated, null, 2), err => {
             if (err) {
                 console.error(err);
             } else {
-                console.log("stratCurrentOVB written successfully")
-            }
+                console.log("stratCurrentOVB written successfully");
+            };
         });
     });
 });
