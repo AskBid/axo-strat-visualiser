@@ -94,6 +94,18 @@ th {
 	color: #eee;	
 }
 
+.bidTDLastTrade {
+	background-color: rgba(36, 43, 119, 0.9);
+	color: #00fffb;
+	font-weight: bolder;
+}
+
+.askTDLastTrade {
+	background-color: rgba(147, 52, 46, 0.9);
+	color: #ff00dd;	
+	font-weight: bolder;
+}
+
 .lastBuyTD {
 	background-color: #6dfafa;	
 	color: #1436e1;
