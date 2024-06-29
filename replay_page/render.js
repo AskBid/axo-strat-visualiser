@@ -28,8 +28,7 @@ async function render(timestamp, start) {
         selectDates.marketTrades, 
         selectDates.stratCurrentOVB, 
         selectDates.stratTrades, 
-        selectDates.spotSpreadData,
-        true // blocks accumulation for current OBV with same price
+        selectDates.spotSpreadData
     )
     
     frameObj.populate()

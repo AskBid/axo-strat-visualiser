@@ -46,7 +46,7 @@ fs.readFile("./replay_database/stratCurrentOVB.json", "utf8", (err, jsonString) 
         return;
     }
     
-    const stratCurrentOVB = JSON.parse(jsonString).result;
+    const stratCurrentOVB = JSON.parse(jsonString).result.map(h.translateOVB);
 
     fs.readFile("./replay_database/stratCurrentOVB_ReplayDatabase.json", "utf8", (err, jsonString) => {
         if (err) {
