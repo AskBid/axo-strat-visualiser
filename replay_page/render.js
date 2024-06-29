@@ -84,10 +84,10 @@ async function main() {
     const endDate = document.getElementById('endTimeLabel');
     endDate.innerHTML = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
 
-    for (let index = 0; index < ((end-start)/500); index++) {
-        await render(start + (500*index), start)
+    for (let index = 0; index < ((end-start)/CRONJOB_INTERVAL); index++) {
+        await render(start + (CRONJOB_INTERVAL*index), start)
         // problem! the OVB limit orders get accumulated over time.
-        await sleep(300)
+        await sleep(SPEED_OF_REFRESH)
     }
 }
 
