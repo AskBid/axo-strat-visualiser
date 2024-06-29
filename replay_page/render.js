@@ -1,9 +1,11 @@
 /// - render price highlight, last trade highlight and current bid-ask spread.
+var timestampFirst = 0
+
 async function render(timestamp) {
     await clearRender()
 
-    if (!timestamp) {
-        timestamp = 1717974902  // 10 digits = seconds  
+    if (timestampFirst == 0) {
+        timestampFirst = timestamp  // 10 digits = seconds  
     }
 
     const selectDates = new SelectDates(
@@ -66,6 +68,10 @@ async function render(timestamp) {
     ///
     // console.log(`frame with timestamp ${timestamp} was rendered.`)  
     
+    // scroll page to spotprice
+    if (timestamp < (timestampFirst + 1000)) {
+        document.getElementById(`${roundtext(frameObj.Highlights.spot + (frameObj.TICK*8), frameObj.TICK)}-box`).scrollIntoView(true);
+    }
     
     return Promise.resolve(frameObj);
 }
@@ -87,7 +93,7 @@ async function main() {
     for (let index = 0; index < ((end-start)/500); index++) {
         await render(start + (500*index))
         // problem! the OVB limit orders get accumulated over time.
-        await sleep(100)
+        await sleep(300)
     }
 }
 

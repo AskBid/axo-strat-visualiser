@@ -95,13 +95,13 @@ th {
 }
 
 .bidTDLastTrade {
-	background-color: rgba(185, 187, 227, 0.9);
+	background-color: rgba(162, 163, 191, 0.8);
 	color: #374585;
 	font-weight: bolder;
 }
 
 .askTDLastTrade {
-	background-color: rgba(194, 156, 154, 0.9);
+	background-color: rgba(186, 155, 153, 0.8);
 	color: #922525;	
 	font-weight: bolder;
 }

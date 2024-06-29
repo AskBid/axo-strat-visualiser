@@ -63,6 +63,10 @@ async function render() {
     currentpriceDiv.appendChild(priceRowLink);
     /// headers.
 
+    // scroll page to spotprice
+    document.getElementById(`${roundtext(frameObj.Highlights.spot, frameObj.TICK)}-box`).scrollIntoView(true);
+
+
     return Promise.resolve(frameObj);
 }
 
