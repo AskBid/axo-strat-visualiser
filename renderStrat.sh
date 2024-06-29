@@ -4,7 +4,7 @@ echo "start renderStrat.sh script ..."
 
 TICK=${3:-0.01}
 SCALE_FACTOR=${4:-1}
-ASSET=$2
+ASSET=${2:-"-"}
 STRAT=$1
 echo "STRAT: ${STRAT}"
 echo "ASSET: ${ASSET}"
