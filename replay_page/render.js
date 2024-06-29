@@ -64,7 +64,7 @@ async function render(timestamp, start) {
     
     // scroll page to spotprice
     if (timestamp < (start + 1000)) {
-        document.getElementById(`${roundtext(frameObj.Highlights.spot + (frameObj.TICK*8), frameObj.TICK)}-box`).scrollIntoView(true);
+        document.getElementById(`${roundtext(frameObj.Highlights.spot + (frameObj.TICK*10), frameObj.TICK)}-box`).scrollIntoView(true);
     }
     
     return Promise.resolve(frameObj);
