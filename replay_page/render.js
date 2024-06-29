@@ -47,6 +47,8 @@ async function render(timestamp) {
     await Promise.all(promises)
 
     renderLast(frameObj.lastTrade, frameObj.TICK)
+    renderBidStratLast(frameObj.lastBidStratTrade, frameObj.TICK)
+    renderAskStratLast(frameObj.lastAskStratTrade, frameObj.TICK)
     renderSpotPrice(frameObj.Highlights.spot, frameObj.TICK)
     renderAskBid(frameObj.Highlights.ask, frameObj.TICK)
     renderAskBid(frameObj.Highlights.bid, frameObj.TICK)
