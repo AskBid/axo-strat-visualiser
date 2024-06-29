@@ -21,6 +21,7 @@ Here is an image as an example of the result:
 - **I.:** These are the latest Sell Market Orders similar to point C. They also accumulate if more than one Market Order was executed at the same price level.
 - **L.:** These are the Buy Limit Orders of the strategy that have been matched with a Sell Market Order, corresponding to point B.
 - **M.:** In this particular strategy visualization, there weren't any open Buy Limit Orders for the strategy at this time. If there were any, they would be visualized similarly to those at point A, but with a blue background and in the leftmost column.
+- **N.:** This two highlighted cells in the strategy trades column indicate the latest strategy trades for both the buy and sell side. In other words the last exectued Limit Orders, Bid and Ask from the strategy.
 
 # Prerequisits
 
