@@ -1,6 +1,30 @@
+# What is it?
+
+**axo-strat-visualiser** is a set of scripts that query the AXO API to gather the same information on a strategy that you can see on their website (https://app.axo.trade/). These scripts then process the information to make it more readable or present it differently using concepts of the Depth Of Market visualization or Price Ladder. The result is visualized in a local HTML page.
+
+A rough estimate of the strategy profits is also calculated and visualized.
+
+Here is an image as an example of the result:
+
+![AXO strategy visualiser example with legend](./static/legend.png)
+
+### Legend: 
+
+- **A.:** An open Limit Order set by the strategy. On the AXO website, you can find it on the strategy page under the "Current VOB" tab.
+- **B.:** These are the Limit Orders of the strategy that have been executed because they matched with a Market Order. It is possible that executions at different times but at the same price level get accumulated. The red column represents Offer Limit Orders, meaning Limit Orders that the strategy has sold. These strategy trades are also found on the AXO strategy page under the "Trade History" tab.
+- **C.:** These are Market Orders not related to the strategy. They are Market Orders executed by anyone in the market, taking liquidity, usually from Market Making strategies. On the right, in blue font, are the buy Market Orders that bought into Offer Limit Orders.
+- **D.:** This grey column labels each price level. You can choose the step at which the price level increases.
+- **E.:** This highlights the lowest Offer Limit Order, usually defined as the Ask, indicating the current lowest price at which it is possible to buy the asset.
+- **F.:** This is the spot price, defined as the middle price between the ask and bid prices, or the lowest Offer Limit Order and the highest Bid Limit Order.
+- **G.:** This is the bid price, the highest price at which you can sell into a Limit Order.
+- **H.:** This indicates the last Market Order that was executed, usually determining the price (if not the spot price). When in pink and in the left column, it means the last trade was a sell. If the last trade was a buy, it will have a blue background and be in the right column. These trades typically alternate between left and right, sell and buy, like a tennis match.
+- **I.:** These are the latest Sell Market Orders similar to point C. They also accumulate if more than one Market Order was executed at the same price level.
+- **L.:** These are the Buy Limit Orders of the strategy that have been matched with a Sell Market Order, corresponding to point B.
+- **M.:** In this particular strategy visualization, there weren't any open Buy Limit Orders for the strategy at this time. If there were any, they would be visualized similarly to those at point A, but with a blue background and in the leftmost column.
+
 # Prerequisits
 
-Need to have `curl` and `nodejs` installed. Is possible to run them on Windows but not sure what's the best route.
+Need to have `curl` and `nodejs` installed. Is possible to run them on Windows but not sure what's the best route. Also there are `.sh` scripts that i am sure is possible to run on Windows too, but not sure either on what's the requirement, I am sure is googlable. Otherwise MacOS and linux is the best to run this scripts.
 
 On MacOS and Linux should come wiht them already but `curl` is easy to install with:
 
@@ -83,13 +107,15 @@ $ ./renderStrat.sh 3c5c3afcce7bd1a330f43e7b45385d5511afc5f5c8b76e47c5e6e3a5 SNEK
 In this case the TICK wil default to 0.01 which for SNEK will be far too big, and all the trades will be probably condensed in one price level (TICK).
 
 
-# brief use of replay functions:
+# Replay Mode
 
 ### Intro
 
 This Replay Mode it is simply a set of scripts to fetch data at certain interval (using Linux crontab to launch the script every x time), after which the data fetched can be reorganised from a script that prepares the data to be rendered by a local webpage that replays all of the data recorded at a higher speed.
 
 In the future will be possible to set the speed, but for now it is set as such that 33 hours will be compressed in 30 seconds.
+
+> Note: VOB strategy Limit Orders and SpotPrice/AskBid will have the same granularity as the Cronjob you are setting up, while the Market Orders trades and Strategy Trades, will have a higer time granularity as they are timestamped with the actual time they happened rather than the timestamp of when the cronjob happened as in with spotPrice and VOB strat positions. It is something that may be improved in the future.
 
 You can still modify such parameters within the code of the file `replay_page/render.js`.
 
