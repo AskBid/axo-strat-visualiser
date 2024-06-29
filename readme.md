@@ -118,7 +118,7 @@ In the future will be possible to set the speed, but for now it is set as such t
 
 > Note: VOB strategy Limit Orders and SpotPrice/AskBid will have the same granularity as the Cronjob you are setting up, while the Market Orders trades and Strategy Trades, will have a higer time granularity as they are timestamped with the actual time they happened rather than the timestamp of when the cronjob happened as in with spotPrice and VOB strat positions. It is something that may be improved in the future.
 
-You can still modify such parameters within the code of the file `replay_page/render.js`.
+You can still modify such parameters giving different arguments when running `renderReplayStorageFactory.js` (see below).
 
 ### How To
 
@@ -139,13 +139,12 @@ when data is enough and ready stop the cronjob and run `node renderReplayStorage
 here a few example on posible config of `renderReplayStorageFactory.js`. Notice that if you skip an argument you need to leave a dash "-" if there are other arguments after it.
 
 ```sh
-node renderReplayStorageFactory.js <LOCATION_TO_READ_DATA_FROM> <TICK_SIZE> <SCALE_FACTOR>
-node renderReplayStorageFactory.js - 0.001
-node renderReplayStorageFactory.js - 0.00001 1000
-node renderReplayStorageFactory.js ./replay_archive/cnt00 - 10
-node renderReplayStorageFactory.js ./replay_archive/cnt03
-node renderReplayStorageFactory.js ./replay_archive/cnt03 0.1
-node renderReplayStorageFactory.js ,/replay_archive/snek_00 0.00001 1000
+# run the following to see examples of how to give arguments to renderReplayStorageFactory.js
+$ node renderReplayStorageFactory.js -h
+# node renderReplayStorageFactory.js <location_to_read_from> <TICK> <SCALE_FACTOR> <CRONJOB_INTERVAL> <SPEED_OF_REFRESH>
+# node renderReplayStoraeFactory.js <default: ./replay_database> <d: 0.01> <d: 1> <d: 300> <d: 200>"
 ```
+
+the last two arguments define the step that the interval recorded will be divided into (`CRONJOB_INTERVAL`) and the speed of refresh with which the the render function will update (`SPEED_OF_REFRESH`) for each of this divisions. All values are considered in seconds.
 
 When `renderReplayStorageFactory.js` run successfully you can launch the web page `/replay_page/index.html` from you browser.
