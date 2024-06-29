@@ -1,12 +1,7 @@
 /// - render price highlight, last trade highlight and current bid-ask spread.
-var timestampFirst = 0
 
-async function render(timestamp) {
+async function render(timestamp, start) {
     await clearRender()
-
-    if (timestampFirst == 0) {
-        timestampFirst = timestamp  // 10 digits = seconds  
-    }
 
     const selectDates = new SelectDates(
         timestamp, 
@@ -69,7 +64,7 @@ async function render(timestamp) {
     // console.log(`frame with timestamp ${timestamp} was rendered.`)  
     
     // scroll page to spotprice
-    if (timestamp < (timestampFirst + 1000)) {
+    if (timestamp < (start + 1000)) {
         document.getElementById(`${roundtext(frameObj.Highlights.spot + (frameObj.TICK*8), frameObj.TICK)}-box`).scrollIntoView(true);
     }
     
@@ -91,7 +86,7 @@ async function main() {
     endDate.innerHTML = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
 
     for (let index = 0; index < ((end-start)/500); index++) {
-        await render(start + (500*index))
+        await render(start + (500*index), start)
         // problem! the OVB limit orders get accumulated over time.
         await sleep(300)
     }
