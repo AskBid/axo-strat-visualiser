@@ -148,3 +148,7 @@ $ node renderReplayStorageFactory.js -h
 the last two arguments define the step that the interval recorded will be divided into (`CRONJOB_INTERVAL`) and the speed of refresh with which the the render function will update (`SPEED_OF_REFRESH`) for each of this divisions. All values are considered in seconds.
 
 When `renderReplayStorageFactory.js` run successfully you can launch the web page `/replay_page/index.html` from you browser.
+
+# Side Notes
+
+> If the strat executes market Orders they will still appear as Limit Orders matched.
