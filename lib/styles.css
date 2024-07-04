@@ -14,6 +14,54 @@ body {
 	/* align-items: stretch; */
 }
 
+.tooltip {
+  position: relative;
+  /* display: inline-block; */
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptextask {
+  visibility: hidden;
+  width: 120px;
+  background-color: rgba(247, 41, 41, 0.8);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  right: 95%;
+  bottom: 0%;
+}
+
+.tooltip:hover .tooltiptextask {
+  visibility: visible;
+}
+
+.tooltip .tooltiptextbid {
+  visibility: hidden;
+  width: 120px;
+  background-color: rgba(46, 93, 158, 0.8);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  left: 95%;
+  bottom: 0%;
+  /* right: 0%;
+  bottom: 100%; */
+}
+
+.tooltip:hover .tooltiptextbid {
+  visibility: visible;
+}
+
 .my-table {
     width: 100%;
     table-layout: auto; /* Set fixed table layout */
